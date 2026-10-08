@@ -67,11 +67,9 @@ main{min-width:0;animation:in .35s ease both}
 .empty{color:var(--muted);font-size:var(--s-sm);padding:40px 0}
 
 /* ---------- 首頁：自動滾動作品帶 ---------- */
-.ticker{overflow-x:auto;scrollbar-width:none;cursor:grab}
-.ticker::-webkit-scrollbar{display:none}
+.ticker{overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .ticker.dragging{cursor:grabbing}
-.ticker.dragging a{pointer-events:none}
-.track{display:flex;gap:24px;width:max-content}
+.track{display:flex;gap:24px;width:max-content;will-change:transform;backface-visibility:hidden}
 .tk{flex:none;display:flex;flex-direction:column;gap:10px;-webkit-user-drag:none}
 .tk .img{height:clamp(240px,60vh,600px);max-width:none;overflow:hidden;background:var(--soft)}
 .tk img{width:100%;height:100%;max-width:none;object-fit:cover;-webkit-user-drag:none;user-select:none;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .3s}
@@ -305,35 +303,71 @@ function home(){
     <ul class="index">${list.map(p => `<li><a href="#w-${p.id}"><span>${esc(p.title)}</span><span class="c">${esc(catOf(p.category).label)}</span><span class="y">${esc(p.year)}</span></a></li>`).join("")}</ul>`;
 }
 
-/* 作品帶自動滾動：無限循環、滑鼠移上暫停、可拖曳 */
+/* 作品帶自動滾動：無限循環、滑鼠移上暫停、可拖曳／滑動（放開後會順著慣性滑一段） */
+const TICKER_SPEED = 70;                      // 每秒移動幾 px，想快一點就改大
 let stopTicker = () => {};
 function startTicker(){
   stopTicker();
   const el = $("#ticker"); if (!el) return;
+  const track = el.querySelector(".track");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const SPEED = reduce ? 0 : 40;              // 每秒移動幾 px，想快一點就改大
-  let pos = 0, last = performance.now(), paused = false, resumeT, raf, drag = null;
-  const half = () => el.querySelector(".track").scrollWidth / 2;
-  const wrap = () => { const h = half(); if (h > 0) { if (pos >= h) pos -= h; if (pos < 0) pos += h; } };
+  const target = reduce ? 0 : TICKER_SPEED;
+  let pos = 0, speed = target, last = performance.now(), paused = false, resumeT, raf, drag = null, fling = 0, half = 0;
+  const measure = () => { half = track.scrollWidth / 2; };
+  const ro = new ResizeObserver(measure); ro.observe(track); measure();
+  const wrap = () => { if (half > 0) { pos %= half; if (pos < 0) pos += half; } };
+  const paint = () => { track.style.transform = `translate3d(${-pos}px,0,0)`; };
   const tick = now => {
-    const dt = Math.min(now - last, 64) / 1000; last = now;
-    if (!paused && !drag) { pos += SPEED * dt; wrap(); el.scrollLeft = pos; }
+    const dt = Math.min(now - last, 50) / 1000; last = now;
+    if (!drag) {
+      if (Math.abs(fling) > 5) { pos += fling * dt; fling *= Math.pow(0.04, dt); }   // 慣性
+      else { fling = 0; speed += ((paused ? 0 : target) - speed) * Math.min(1, dt * 6); pos += speed * dt; } // 暫停／恢復時平滑加減速
+      wrap(); paint();
+    }
     raf = requestAnimationFrame(tick);
   };
-  el.addEventListener("scroll", () => { if (Math.abs(el.scrollLeft - pos) > 2) { pos = el.scrollLeft; wrap(); if (pos !== el.scrollLeft) el.scrollLeft = pos; } });
-  el.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") paused = true; });
+  const pause = () => { paused = true; clearTimeout(resumeT); };
+  const resumeLater = ms => { clearTimeout(resumeT); resumeT = setTimeout(() => paused = false, ms); };
+  el.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") pause(); });
   el.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") paused = false; });
-  el.addEventListener("focusin", () => paused = true);
+  el.addEventListener("focusin", pause);
   el.addEventListener("focusout", () => paused = false);
-  el.addEventListener("touchstart", () => { paused = true; clearTimeout(resumeT); }, { passive: true });
-  el.addEventListener("touchend", () => { resumeT = setTimeout(() => paused = false, 2000); });
-  el.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.button !== 0) return; drag = { x: e.clientX, start: pos, moved: false }; });
+  el.addEventListener("pointerdown", e => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    pause(); fling = 0;
+    drag = { x: e.clientX, start: pos, moved: false, lx: e.clientX, lt: performance.now(), v: 0, type: e.pointerType };
+  });
+  el.addEventListener("wheel", e => {             // 觸控板左右滑
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    e.preventDefault(); fling = 0; pos += e.deltaX; wrap(); paint();
+  }, { passive: false });
+  let blockClickUntil = 0;
+  el.addEventListener("click", ev => { if (performance.now() < blockClickUntil) { ev.preventDefault(); ev.stopPropagation(); } }, true);
+  function onMove(e){
+    if (!drag) return;
+    const dx = e.clientX - drag.x, now = performance.now();
+    if (!drag.moved && Math.abs(dx) > 6) { drag.moved = true; el.classList.add("dragging"); }
+    if (drag.moved) {
+      const dt = Math.max(now - drag.lt, 1);
+      drag.v = 0.8 * ((drag.lx - e.clientX) / dt * 1000) + 0.2 * drag.v;
+      drag.lx = e.clientX; drag.lt = now;
+      pos = drag.start - dx; wrap(); paint();
+    }
+  }
+  function onUp(){
+    if (!drag) return;
+    const d = drag; drag = null; el.classList.remove("dragging");
+    if (d.moved) {
+      if (performance.now() - d.lt < 80) fling = Math.max(-3000, Math.min(3000, d.v));
+      blockClickUntil = performance.now() + 350;
+    }
+    if (d.type !== "mouse") resumeLater(1500);
+  }
   addEventListener("pointermove", onMove);
   addEventListener("pointerup", onUp);
-  function onMove(e){ if (!drag) return; const dx = e.clientX - drag.x; if (Math.abs(dx) > 5 && !drag.moved) { drag.moved = true; el.classList.add("dragging"); } if (drag.moved) { pos = drag.start - dx; wrap(); el.scrollLeft = pos; } }
-  function onUp(){ if (!drag) return; const moved = drag.moved; drag = null; setTimeout(() => el.classList.remove("dragging"), 0); if (moved) el.addEventListener("click", ev => ev.preventDefault(), { capture: true, once: true }); }
-  raf = requestAnimationFrame(tick);
-  stopTicker = () => { cancelAnimationFrame(raf); clearTimeout(resumeT); removeEventListener("pointermove", onMove); removeEventListener("pointerup", onUp); stopTicker = () => {}; };
+  addEventListener("pointercancel", onUp);
+  paint(); raf = requestAnimationFrame(tick);
+  stopTicker = () => { cancelAnimationFrame(raf); clearTimeout(resumeT); ro.disconnect(); removeEventListener("pointermove", onMove); removeEventListener("pointerup", onUp); removeEventListener("pointercancel", onUp); stopTicker = () => {}; };
 }
 function category(c){
   return `<p class="crumb"><a href="#home">./</a>${esc(c.id)}</p><h1 class="page-h">${esc(c.label)}</h1><p class="page-sub">${esc(c.en)}</p>${grid(SITE.projects.filter(p => p.category === c.id))}`;
