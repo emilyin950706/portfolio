@@ -36,8 +36,9 @@ img{display:block;max-width:100%}
 .nav a{position:relative;display:inline-flex;align-items:baseline;color:var(--muted);transition:color .2s}
 .nav a:hover,.nav a[aria-current="page"]{color:var(--fg)}
 /* Home、About 是標題：黑色、粗一點、大寫字距；分類是灰色小字 */
-.nav .head a,.nav .head span{color:var(--fg);font-size:var(--s-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
-.nav .head span{display:inline-block;margin-bottom:2px}
+.nav .head a{color:var(--fg);font-size:var(--s-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+/* 滑鼠移到 HOME、ABOUT ZHEN 時字變淡，提示可以點 */
+.nav .head a:hover{color:#a9ada6}
 .nav a[aria-current="page"]::before{content:"";position:absolute;left:-12px;top:50%;width:5px;height:5px;border-radius:50%;background:var(--accent);translate:0 -50%}
 .nav .sep{height:1px;background:var(--line);margin:10px 0}
 .nav .gap{height:8px}
@@ -166,7 +167,7 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
   .side.open .side-body .nav > li,.side.open .side-body .social > a{opacity:1;transform:none;transition-delay:calc(var(--i,0) * 45ms + 80ms)}
   .side-body .nav{gap:10px}
   .side-body .nav a{font-size:16px}
-  .side-body .nav .head a,.side-body .nav .head span{font-size:var(--s-sm)}
+  .side-body .nav .head a{font-size:var(--s-sm)}
   .side-body .social{font-size:var(--s-sm);gap:10px}
   .work-head,.about{grid-template-columns:minmax(0,1fr);gap:28px}
   .block{grid-template-columns:minmax(0,1fr);gap:4px}
@@ -311,7 +312,6 @@ function sidebar(route){
   const link = (h, label, head) => `<li${head ? ' class="head"' : ""}><a href="#${h}" ${route === h ? 'aria-current="page"' : ""}>${esc(label)}</a></li>`;
   $("#nav").innerHTML = link("home", "Home", true)
     + `<li class="sep" aria-hidden="true"></li>`
-    + `<li class="head"><span>Works</span></li>`
     + SITE.categories.map(c => link(c.id, c.label)).join("")
     + `<li class="sep" aria-hidden="true"></li>` + link("about", "About Zhen", true);
   $("#social").innerHTML = SITE.socials.map(extLink).join("");
