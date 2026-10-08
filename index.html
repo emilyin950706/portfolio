@@ -138,7 +138,8 @@ html.has-cursor .cursor.hide{opacity:0}
 .links a{color:var(--muted);word-break:break-all}.links a:hover{color:var(--fg)}
 .note{font-size:var(--s-sm);color:var(--muted);margin:12px 0 0}
 .exp-group{margin:0 0 26px}
-.exp-group h3{font-size:var(--s-sm);font-weight:500;margin:0 0 6px}
+/* 經歷小標比內文大、粗，層級：EXPERIENCE（小字標籤）> Education 等小標 > 內文 */
+.exp-group h3{font-size:var(--s-md);font-weight:600;letter-spacing:.01em;margin:0 0 10px}
 .exp-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:var(--s-sm);line-height:1.65}
 .exp-group li{position:relative;padding-left:14px}
 .exp-group li::before{content:"";position:absolute;left:0;top:.72em;width:4px;height:4px;border-radius:50%;background:var(--muted)}
@@ -241,11 +242,11 @@ const SITE = {
   contactNote: "若有合作或實習機會，歡迎與我聯繫。",
   /* 經歷：一般項目直接寫一行字；需要補充說明的寫成 { t: "標題", d: ["說明｜內容", ...] } */
   experience: [
-    { group: "學歷", items: [
+    { group: "Education", items: [
       "臺灣科技大學 設計系",
       "臺灣科技大學 設計系學會 副會長"
     ] },
-    { group: "獲獎", items: [
+    { group: "Awards", items: [
       "獲選桃園市青年事務局「2024日本國際設計學群體驗學習營」代表團成員",
       "115年 吳鴻麟先生紀念獎學金",
       "113-2｜114-1｜114-2 書卷獎",
@@ -254,12 +255,12 @@ const SITE = {
       "110學年度 全國高級中等學校學生校園刊物競賽 銀質獎",
       "110學年度 全國高級中等學校閱讀心得寫作比賽 優等"
     ] },
-    { group: "參賽", items: [
+    { group: "Competitions", items: [
       "2023 桃園設計獎｜擔任專案統籌、企劃書撰寫",
       "2024 A+文化資產創意獎｜擔任專案統籌、展位場佈",
       "2023 臺灣國際學生創意設計大賽｜擔任專案統籌"
     ] },
-    { group: "活動", items: [
+    { group: "Leadership & Activities", items: [
       { t: "115屆 臺灣科技大學設計系學會 會長組", d: [
         "組織營運與溝通｜擔任系上師生與系學會各部門之溝通樞紐，統籌意見反饋機制與公共事務運作",
         "專案統籌與時程管理｜主導大型活動前期企劃、跨組協調與進度控管，確保專案與活動如期完成"
@@ -269,7 +270,7 @@ const SITE = {
         "場地佈置與道具協作｜協同團隊執行現場空間佈置，並參與實體互動道具製作，協助確保活動流程與展演體驗順暢"
       ] }
     ] },
-    { group: "研習與課程", items: [
+    { group: "Programs & Courses", items: [
       "2023 桃園市政府青年事務局「日本國際設計學群體驗學習營」",
       "114-1 即時編碼課程（EMI）"
     ] }
@@ -541,7 +542,7 @@ function about(){
       <section class="bio"><h2>About Zhen</h2><p class="disc">${SITE.disciplines.map(esc).join(" / ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
       <section><h2>Email</h2><div class="mail"><code id="mail">${esc(SITE.email)}</code><button class="copy" id="copyBtn" type="button">複製</button></div></section>
       <section><h2>Follow</h2><div class="links">${SITE.socials.map(s => extLink({ label: s.url.replace(/^https?:\/\/(www\.)?/, ""), url: s.url })).join("")}</div><p class="note">${esc(SITE.contactNote)}</p></section>
-      <section><h2>Experience</h2>${SITE.experience.map(g => `<div class="exp-group"><h3>［${esc(g.group)}。］</h3><ul>${g.items.map(expItem).join("")}</ul></div>`).join("")}</section>
+      <section><h2>Experience</h2>${SITE.experience.map(g => `<div class="exp-group"><h3>${esc(g.group)}</h3><ul>${g.items.map(expItem).join("")}</ul></div>`).join("")}</section>
     </div>
     <div class="strip">${SITE.projects.slice(0, 5).map((p, i) => `<a href="#w-${p.id}"><img src="${p.cover || ph(p.title, "3/4", i)}" alt="${esc(p.title)}" loading="lazy"></a>`).join("")}</div>
   </div>`;
