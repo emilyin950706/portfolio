@@ -34,10 +34,10 @@ img{display:block;max-width:100%}
 .role{font-family:var(--font-mono);font-size:var(--s-xs);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
 .nav{display:flex;flex-direction:column;gap:6px;list-style:none;margin:0;padding:0}
 .nav a{display:inline-flex;align-items:baseline;color:var(--muted);transition:color .2s}
-.nav a .p{font-family:var(--font-mono);font-size:var(--s-xs);max-width:0;overflow:hidden;white-space:nowrap;opacity:0;transition:max-width .25s,opacity .2s,margin .25s}
 .nav a:hover,.nav a[aria-current="page"]{color:var(--fg)}
-.nav a:hover .p,.nav a[aria-current="page"] .p{max-width:10em;opacity:1;margin-right:6px;color:var(--accent)}
+.nav a[aria-current="page"]{font-weight:500}
 .nav .sep{height:1px;background:var(--line);margin:8px 0}
+.nav .gap{height:14px}
 .social{display:flex;flex-direction:column;gap:4px;font-family:var(--font-mono);font-size:var(--s-xs);color:var(--muted)}
 .social a:hover{color:var(--fg)}
 .social a,.links a{display:inline-flex;align-items:center;gap:8px;width:fit-content}
@@ -288,9 +288,11 @@ function sidebar(route){
   $("#name").textContent = SITE.name;
   $("#role").textContent = SITE.role;
   const av = $("#avatar"); av.src = SITE.avatar || ph("", "1/1", 0); av.alt = SITE.name;
-  const items = [["", "Home", "./"], ...SITE.categories.map(c => [c.id, c.label, "./" + c.id])];
-  const link = (h, label, p) => `<li><a href="#${h || "home"}" ${route === (h || "home") ? 'aria-current="page"' : ""}><span class="p">${esc(p)}</span>${esc(label)}</a></li>`;
-  $("#nav").innerHTML = items.map(i => link(...i)).join("") + `<li class="sep" aria-hidden="true"></li>` + link("about", "About", "./about");
+  const link = (h, label) => `<li><a href="#${h}" ${route === h ? 'aria-current="page"' : ""}>${esc(label)}</a></li>`;
+  $("#nav").innerHTML = link("home", "Home")
+    + `<li class="gap" aria-hidden="true"></li>`
+    + SITE.categories.map(c => link(c.id, c.label)).join("")
+    + `<li class="sep" aria-hidden="true"></li>` + link("about", "About");
   $("#social").innerHTML = SITE.socials.map(extLink).join("");
   $("#foot").textContent = `© ${new Date().getFullYear()} ${SITE.name}`;
 }
