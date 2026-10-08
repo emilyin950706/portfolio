@@ -82,12 +82,12 @@ main{min-width:0;animation:in .35s ease both}
 .tk .cap .t::after{content:"→";display:inline-block;margin-left:6px;color:var(--accent);opacity:0;transform:translateX(-4px);transition:opacity .3s,transform .3s}
 .tk.is-focus .cap .t::after{opacity:1;transform:none}
 .tk .cap{margin-top:0;width:0;min-width:100%;transition:color .3s}
-.cursor{position:fixed;left:0;top:0;z-index:50;pointer-events:none;width:8px;height:8px;border-radius:50%;background:var(--fg);box-shadow:0 0 0 1px rgba(255,255,255,.55);display:grid;place-items:center;opacity:0;transition:width .35s cubic-bezier(.2,.7,.2,1),height .35s cubic-bezier(.2,.7,.2,1),background-color .3s,opacity .2s,scale .15s}
-.cursor span{font-family:var(--font-body);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--bg);white-space:nowrap;opacity:0;transition:opacity .2s}
+.cursor{position:fixed;left:0;top:0;z-index:50;pointer-events:none;width:8px;height:8px;border-radius:999px;background:var(--fg);box-shadow:0 0 0 1px rgba(255,255,255,.55);display:grid;place-items:center;opacity:0;transition:width .35s cubic-bezier(.2,.7,.2,1),height .35s cubic-bezier(.2,.7,.2,1),background-color .3s,opacity .2s,scale .15s}
+.cursor span{font-family:var(--font-body);font-size:7.5pt;line-height:1;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--bg);white-space:nowrap;opacity:0;transition:opacity .2s}
 html.has-cursor .cursor{opacity:1}
 html.has-cursor .cursor.hide{opacity:0}
 .cursor.link{width:30px;height:30px;background:rgba(28,30,27,.14);box-shadow:none}
-.cursor.view{width:46px;height:46px;background:var(--fg);box-shadow:none}
+.cursor.view{width:44px;height:20px;background:var(--fg);box-shadow:none}
 .cursor.view span{opacity:1;transition-delay:.08s}
 .cursor.down{scale:.8}
 /* 只有用滑鼠的裝置才把系統游標換成小黑點 */
