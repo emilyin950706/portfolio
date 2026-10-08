@@ -36,8 +36,19 @@ img{display:block;max-width:100%}
 .nav a{position:relative;display:inline-flex;align-items:baseline;color:var(--muted);transition:color .2s}
 .nav a:hover,.nav a[aria-current="page"]{color:var(--fg)}
 /* Home、About 是標題：黑色、粗一點、大寫字距；分類是灰色小字 */
-.nav .head a,.nav .head span{color:var(--fg);font-size:var(--s-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
-.nav .head span{display:inline-block;margin-bottom:2px}
+.nav .head a,.nav-toggle{color:var(--fg);font-size:var(--s-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.nav-toggle{font-family:inherit;line-height:inherit;background:none;border:0;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:10px}
+/* ＋ 收起時，－ 展開時 */
+.pm{position:relative;width:8px;height:8px}
+.pm::before,.pm::after{content:"";position:absolute;left:0;top:50%;width:8px;height:1.5px;margin-top:-.75px;background:currentColor;transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.pm::after{transform:rotate(90deg)}
+.nav-toggle[aria-expanded="true"] .pm::after{transform:rotate(0deg)}
+.sub-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.7,.2,1)}
+.sub-wrap.open{grid-template-rows:1fr}
+.sub{min-height:0;overflow:hidden;list-style:none;margin:0;padding:0 0 0 0;display:flex;flex-direction:column;gap:6px}
+.sub li:first-child{margin-top:4px}
+.sub a{opacity:0;transform:translateY(-4px);transition:opacity .3s,transform .3s,color .2s}
+.sub-wrap.open .sub a{opacity:1;transform:none}
 .nav a[aria-current="page"]::before{content:"";position:absolute;left:-12px;top:50%;width:5px;height:5px;border-radius:50%;background:var(--accent);translate:0 -50%}
 .nav .sep{height:1px;background:var(--line);margin:10px 0}
 .nav .gap{height:8px}
@@ -292,16 +303,26 @@ const extLink = s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${i
 const catOf = id => SITE.categories.find(c => c.id === id) || { label: id, zh: "" };
 const idx = id => SITE.projects.findIndex(p => p.id === id);
 
+let worksOpen = null;
 function sidebar(route){
   $("#name").textContent = SITE.name;
   $("#role").textContent = SITE.role;
   const av = $("#avatar"); av.src = SITE.avatar || ph("", "1/1", 0); av.alt = SITE.name;
   const link = (h, label, head) => `<li${head ? ' class="head"' : ""}><a href="#${h}" ${route === h ? 'aria-current="page"' : ""}>${esc(label)}</a></li>`;
+  // WORKS 可以點開／收起；在分類頁或作品頁時自動展開，使用者手動切換過就照他的選擇
+  const open = worksOpen ?? SITE.categories.some(c => c.id === route);
   $("#nav").innerHTML = link("home", "Home", true)
     + `<li class="gap" aria-hidden="true"></li>`
-    + `<li class="head"><span>Works</span></li>`
-    + SITE.categories.map(c => link(c.id, c.label)).join("")
+    + `<li class="head"><button class="nav-toggle" id="worksBtn" type="button" aria-expanded="${open}" aria-controls="worksSub">Works<span class="pm" aria-hidden="true"></span></button></li>`
+    + `<li class="sub-wrap${open ? " open" : ""}" id="worksWrap"${open ? "" : " inert"}><ul class="sub" id="worksSub">${SITE.categories.map(c => link(c.id, c.label)).join("")}</ul></li>`
     + `<li class="sep" aria-hidden="true"></li>` + link("about", "About", true);
+  $("#worksBtn").onclick = () => {
+    const now = $("#worksBtn").getAttribute("aria-expanded") !== "true";
+    worksOpen = now;
+    $("#worksBtn").setAttribute("aria-expanded", now);
+    $("#worksWrap").classList.toggle("open", now);
+    $("#worksWrap").inert = !now;
+  };
   $("#social").innerHTML = SITE.socials.map(extLink).join("");
   $("#foot").textContent = `© ${new Date().getFullYear()} ${SITE.name}`;
 }
