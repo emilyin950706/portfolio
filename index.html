@@ -75,19 +75,25 @@ main{min-width:0;animation:in .35s ease both}
 .tk.is-hover{transform:translateY(-8px)}
 .tk.is-hover img{scale:1.05}
 .track.has-hover .tk:not(.is-hover){opacity:.25;filter:grayscale(.8)}
+/* 手機版沒有滑鼠：畫面中間的作品自動被選中 */
+.tk.is-focus{transform:translateY(-6px)}
+.tk.is-focus img{scale:1.04}
+.track.has-focus .tk:not(.is-focus){opacity:.4;filter:grayscale(.6)}
+.tk .cap .t::after{content:"→";display:inline-block;margin-left:6px;color:var(--accent);opacity:0;transform:translateX(-4px);transition:opacity .3s,transform .3s}
+.tk.is-focus .cap .t::after{opacity:1;transform:none}
 .tk .cap{margin-top:0;width:0;min-width:100%;transition:color .3s}
 .cursor{position:fixed;left:0;top:0;z-index:50;pointer-events:none;width:8px;height:8px;border-radius:50%;background:var(--fg);box-shadow:0 0 0 1px rgba(255,255,255,.55);display:grid;place-items:center;opacity:0;transition:width .35s cubic-bezier(.2,.7,.2,1),height .35s cubic-bezier(.2,.7,.2,1),background-color .3s,opacity .2s,scale .15s}
-.cursor span{font-family:var(--font-body);font-size:var(--s-xs);font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--bg);white-space:nowrap;opacity:0;transition:opacity .2s}
+.cursor span{font-family:var(--font-body);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--bg);white-space:nowrap;opacity:0;transition:opacity .2s}
 html.has-cursor .cursor{opacity:1}
 html.has-cursor .cursor.hide{opacity:0}
 .cursor.link{width:30px;height:30px;background:rgba(28,30,27,.14);box-shadow:none}
-.cursor.view{width:68px;height:68px;background:var(--fg);box-shadow:none}
+.cursor.view{width:46px;height:46px;background:var(--fg);box-shadow:none}
 .cursor.view span{opacity:1;transition-delay:.08s}
 .cursor.down{scale:.8}
 /* 只有用滑鼠的裝置才把系統游標換成小黑點 */
 @media (hover:hover) and (pointer:fine){html.has-cursor,html.has-cursor *{cursor:none!important}}
 @media (hover:none),(pointer:coarse){.cursor{display:none}}
-@media (max-width:820px){.ticker{--H:clamp(220px,46vh,380px)}.track{gap:16px}}
+@media (max-width:820px){.ticker{--H:clamp(200px,38vh,320px)}.track{gap:16px}}
 
 /* ---------- 作品內頁 ---------- */
 .work{max-width:880px}
@@ -346,10 +352,11 @@ function startTicker(){
   const target = reduce ? 0 : TICKER_SPEED;
   let pos = 0, speed = target, last = performance.now(), paused = false, resumeT, raf, drag = null, fling = 0, half = 0, wheelAcc = 0;
   let cards = [], vw = 0;
-  let mx = -100, my = -100, isMouse = false, inside = false, hoverCard = null;
+  let mx = -100, my = -100, isMouse = false, inside = false, hoverCard = null, focusCard = null;
+  const touchUI = matchMedia("(hover: none), (pointer: coarse)").matches;
   const measure = () => {
     half = track.scrollWidth / 2; vw = el.clientWidth;
-    cards = [...track.querySelectorAll(".tk")].map(c => ({ img: c.querySelector("img"), left: c.offsetLeft, w: c.offsetWidth }));
+    cards = [...track.querySelectorAll(".tk")].map(c => ({ el: c, img: c.querySelector("img"), left: c.offsetLeft, w: c.offsetWidth }));
   };
   const parallax = () => {                       // 圖片在框裡跟著位置微微移動，產生景深
     if (reduce) return;
@@ -376,6 +383,11 @@ function startTicker(){
     const at = inside && isMouse && !drag ? document.elementFromPoint(mx, my)?.closest(".tk") : null;
     if (at !== hoverCard) { hoverCard?.classList.remove("is-hover"); at?.classList.add("is-hover"); track.classList.toggle("has-hover", !!at); hoverCard = at; }
     Cursor.setView(!!at);
+    if (touchUI) {                                // 找出最靠近畫面中間的作品
+      let best = null, bd = Infinity;
+      for (const c of cards) { const d = Math.abs(c.left - pos + c.w / 2 - vw / 2); if (d < bd) { bd = d; best = c.el; } }
+      if (best !== focusCard) { focusCard?.classList.remove("is-focus"); best?.classList.add("is-focus"); track.classList.toggle("has-focus", !!best); focusCard = best; }
+    }
     raf = requestAnimationFrame(tick);
   };
   const pause = () => { paused = true; clearTimeout(resumeT); };
