@@ -36,19 +36,8 @@ img{display:block;max-width:100%}
 .nav a{position:relative;display:inline-flex;align-items:baseline;color:var(--muted);transition:color .2s}
 .nav a:hover,.nav a[aria-current="page"]{color:var(--fg)}
 /* Home、About 是標題：黑色、粗一點、大寫字距；分類是灰色小字 */
-.nav .head a,.nav-toggle{color:var(--fg);font-size:var(--s-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
-.nav-toggle{font-family:inherit;line-height:inherit;background:none;border:0;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:10px}
-/* ＋ 收起時，－ 展開時 */
-.pm{position:relative;width:8px;height:8px}
-.pm::before,.pm::after{content:"";position:absolute;left:0;top:50%;width:8px;height:1.5px;margin-top:-.75px;background:currentColor;transition:transform .3s cubic-bezier(.2,.7,.2,1)}
-.pm::after{transform:rotate(90deg)}
-.nav-toggle[aria-expanded="true"] .pm::after{transform:rotate(0deg)}
-.sub-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s cubic-bezier(.2,.7,.2,1)}
-.sub-wrap.open{grid-template-rows:1fr}
-.sub{min-height:0;overflow:hidden;list-style:none;margin:0;padding:0 0 0 0;display:flex;flex-direction:column;gap:6px}
-.sub li:first-child{margin-top:4px}
-.sub a{opacity:0;transform:translateY(-6px);transition:opacity .25s ease,transform .3s ease,color .2s}
-.sub-wrap.open .sub a{opacity:1;transform:none;transition:opacity .45s ease,transform .5s cubic-bezier(.2,.7,.2,1),color .2s;transition-delay:calc(var(--i,0) * 40ms + 60ms),calc(var(--i,0) * 40ms + 60ms),0s}
+.nav .head a,.nav .head span{color:var(--fg);font-size:var(--s-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.nav .head span{display:inline-block;margin-bottom:2px}
 .nav a[aria-current="page"]::before{content:"";position:absolute;left:-12px;top:50%;width:5px;height:5px;border-radius:50%;background:var(--accent);translate:0 -50%}
 .nav .sep{height:1px;background:var(--line);margin:10px 0}
 .nav .gap{height:8px}
@@ -79,8 +68,8 @@ main{min-width:0;animation:in .35s ease both}
 .empty{color:var(--muted);font-size:var(--s-sm);padding:40px 0}
 
 /* ---------- 首頁：自動滾動作品帶 ---------- */
-/* 左右兩側柔和淡出：寬一點、用緩和曲線，避免邊緣看起來像一刀切 */
-.ticker{-webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.04) 1%,rgba(0,0,0,.16) 2.5%,rgba(0,0,0,.38) 4%,rgba(0,0,0,.64) 5.5%,rgba(0,0,0,.86) 7%,#000 9%,#000 91%,rgba(0,0,0,.86) 93%,rgba(0,0,0,.64) 94.5%,rgba(0,0,0,.38) 96%,rgba(0,0,0,.16) 97.5%,rgba(0,0,0,.04) 99%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.04) 1%,rgba(0,0,0,.16) 2.5%,rgba(0,0,0,.38) 4%,rgba(0,0,0,.64) 5.5%,rgba(0,0,0,.86) 7%,#000 9%,#000 91%,rgba(0,0,0,.86) 93%,rgba(0,0,0,.64) 94.5%,rgba(0,0,0,.38) 96%,rgba(0,0,0,.16) 97.5%,rgba(0,0,0,.04) 99%,transparent 100%);--H:clamp(260px,62vh,620px);padding-top:12px;padding-bottom:44px;margin-bottom:-24px;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+/* 左右兩側柔和淡出（緩和曲線，約 5% 寬；手機版不淡出） */
+.ticker{-webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.06) .6%,rgba(0,0,0,.22) 1.4%,rgba(0,0,0,.48) 2.3%,rgba(0,0,0,.74) 3.2%,rgba(0,0,0,.92) 4.1%,#000 5%,#000 95%,rgba(0,0,0,.92) 95.9%,rgba(0,0,0,.74) 96.8%,rgba(0,0,0,.48) 97.7%,rgba(0,0,0,.22) 98.6%,rgba(0,0,0,.06) 99.4%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.06) .6%,rgba(0,0,0,.22) 1.4%,rgba(0,0,0,.48) 2.3%,rgba(0,0,0,.74) 3.2%,rgba(0,0,0,.92) 4.1%,#000 5%,#000 95%,rgba(0,0,0,.92) 95.9%,rgba(0,0,0,.74) 96.8%,rgba(0,0,0,.48) 97.7%,rgba(0,0,0,.22) 98.6%,rgba(0,0,0,.06) 99.4%,transparent 100%);--H:clamp(260px,62vh,620px);padding-top:12px;padding-bottom:44px;margin-bottom:-24px;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .ticker.dragging{cursor:grabbing}
 .track{display:flex;align-items:flex-start;gap:28px;width:max-content;will-change:transform;backface-visibility:hidden}
 .tk{flex:none;display:flex;flex-direction:column;gap:10px;-webkit-user-drag:none;transition:opacity .45s ease,filter .45s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
@@ -111,7 +100,7 @@ html.has-cursor .cursor.hide{opacity:0}
 /* 只有用滑鼠的裝置才把系統游標換成小黑點 */
 @media (hover:hover) and (pointer:fine){html.has-cursor,html.has-cursor *{cursor:none!important}}
 @media (hover:none),(pointer:coarse){.cursor{display:none}}
-@media (max-width:820px){.ticker{--H:clamp(200px,38vh,320px)}.track{gap:16px}}
+@media (max-width:820px){.ticker{--H:clamp(200px,38vh,320px);-webkit-mask-image:none;mask-image:none}.track{gap:16px}}
 
 /* ---------- 作品內頁 ---------- */
 .work{max-width:880px}
@@ -177,7 +166,7 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
   .side.open .side-body .nav > li,.side.open .side-body .social > a{opacity:1;transform:none;transition-delay:calc(var(--i,0) * 45ms + 80ms)}
   .side-body .nav{gap:10px}
   .side-body .nav a{font-size:16px}
-  .side-body .nav .head a,.side-body .nav-toggle{font-size:var(--s-sm)}
+  .side-body .nav .head a,.side-body .nav .head span{font-size:var(--s-sm)}
   .side-body .social{font-size:var(--s-sm);gap:10px}
   .work-head,.about{grid-template-columns:minmax(0,1fr);gap:28px}
   .block{grid-template-columns:minmax(0,1fr);gap:4px}
@@ -315,26 +304,16 @@ const extLink = s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${i
 const catOf = id => SITE.categories.find(c => c.id === id) || { label: id, zh: "" };
 const idx = id => SITE.projects.findIndex(p => p.id === id);
 
-let worksOpen = null;
 function sidebar(route){
   $("#name").textContent = SITE.name;
   $("#role").textContent = SITE.role;
   const av = $("#avatar"); av.src = SITE.avatar || ph("", "1/1", 0); av.alt = SITE.name;
   const link = (h, label, head) => `<li${head ? ' class="head"' : ""}><a href="#${h}" ${route === h ? 'aria-current="page"' : ""}>${esc(label)}</a></li>`;
-  // WORKS 可以點開／收起；在分類頁或作品頁時自動展開，使用者手動切換過就照他的選擇
-  const open = worksOpen ?? SITE.categories.some(c => c.id === route);
   $("#nav").innerHTML = link("home", "Home", true)
-    + `<li class="gap" aria-hidden="true"></li>`
-    + `<li class="head"><button class="nav-toggle" id="worksBtn" type="button" aria-expanded="${open}" aria-controls="worksSub">Works<span class="pm" aria-hidden="true"></span></button></li>`
-    + `<li class="sub-wrap${open ? " open" : ""}" id="worksWrap"${open ? "" : " inert"}><ul class="sub" id="worksSub">${SITE.categories.map((c, k) => link(c.id, c.label).replace("<li>", `<li style="--i:${k}">`)).join("")}</ul></li>`
+    + `<li class="sep" aria-hidden="true"></li>`
+    + `<li class="head"><span>Works</span></li>`
+    + SITE.categories.map(c => link(c.id, c.label)).join("")
     + `<li class="sep" aria-hidden="true"></li>` + link("about", "About Zhen", true);
-  $("#worksBtn").onclick = () => {
-    const now = $("#worksBtn").getAttribute("aria-expanded") !== "true";
-    worksOpen = now;
-    $("#worksBtn").setAttribute("aria-expanded", now);
-    $("#worksWrap").classList.toggle("open", now);
-    $("#worksWrap").inert = !now;
-  };
   $("#social").innerHTML = SITE.socials.map(extLink).join("");
   $("#foot").textContent = `© ${new Date().getFullYear()} ${SITE.name}`;
 }
