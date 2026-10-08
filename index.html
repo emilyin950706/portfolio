@@ -147,12 +147,12 @@ html.has-cursor .cursor.hide{opacity:0}
 .exp-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:var(--s-sm);line-height:1.7;text-wrap:pretty}
 .exp-group li{position:relative;padding-left:14px}
 .exp-group li::before{content:"";position:absolute;left:0;top:.72em;width:4px;height:4px;border-radius:50%;background:var(--muted)}
-/* 經歷區塊：標題一行，底下用一條細線把說明收在一起；小標和說明分兩行，不再用粗體和｜ */
+/* 經歷區塊：標題一行，底下小標和說明分兩行；只靠留白分組，不加線 */
 .exp-group li.entry{padding-left:0}
 .exp-group li.entry::before{display:none}
-.exp-group li.entry + li.entry{margin-top:14px}
-.exp-group .t{display:block;font-weight:500}
-.exp-group .d{display:flex;flex-direction:column;gap:10px;margin-top:8px;padding-left:12px;border-left:1px solid var(--line)}
+.exp-group li.entry + li.entry{margin-top:18px}
+.exp-group .t{display:block;font-weight:600}
+.exp-group .d{display:flex;flex-direction:column;gap:10px;margin-top:8px}
 .exp-group .row{display:flex;flex-direction:column}
 .exp-group .k{color:var(--fg)}
 .exp-group .v{color:var(--muted)}
