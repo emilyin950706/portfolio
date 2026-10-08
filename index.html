@@ -36,7 +36,8 @@ img{display:block;max-width:100%}
 .nav a{position:relative;display:inline-flex;align-items:baseline;color:var(--muted);transition:color .2s}
 .nav a:hover,.nav a[aria-current="page"]{color:var(--fg)}
 /* Home、About 是標題：黑色、粗一點、大寫字距；分類是灰色小字 */
-.nav .head a{color:var(--fg);font-size:var(--s-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.nav .head a,.nav .head span{color:var(--fg);font-size:var(--s-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.nav .head span{display:inline-block;margin-bottom:2px}
 .nav a[aria-current="page"]::before{content:"";position:absolute;left:-12px;top:50%;width:5px;height:5px;border-radius:50%;background:var(--accent);translate:0 -50%}
 .nav .sep{height:1px;background:var(--line);margin:10px 0}
 .nav .gap{height:8px}
@@ -67,11 +68,14 @@ main{min-width:0;animation:in .35s ease both}
 .empty{color:var(--muted);font-size:var(--s-sm);padding:40px 0}
 
 /* ---------- 首頁：自動滾動作品帶 ---------- */
-.ticker{--H:clamp(260px,62vh,620px);padding-top:10px;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.ticker{--H:clamp(260px,62vh,620px);padding-top:12px;padding-bottom:44px;margin-bottom:-24px;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .ticker.dragging{cursor:grabbing}
 .track{display:flex;align-items:flex-start;gap:28px;width:max-content;will-change:transform;backface-visibility:hidden}
 .tk{flex:none;display:flex;flex-direction:column;gap:10px;-webkit-user-drag:none;transition:opacity .45s ease,filter .45s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
-.tk .img{position:relative;height:var(--H);max-width:none;overflow:hidden;background:var(--soft)}
+.tk{perspective:1100px}
+/* 立體感：柔和的多層陰影，選中時陰影加深並跟著滑鼠微微傾斜 */
+.tk .img{position:relative;height:var(--H);max-width:none;overflow:hidden;background:var(--soft);transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d;box-shadow:0 1px 2px rgba(24,28,24,.05),0 10px 24px -14px rgba(24,28,24,.22);transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .5s ease}
+.tk.is-hover .img,.tk.is-focus .img{box-shadow:0 2px 4px rgba(24,28,24,.06),0 28px 50px -18px rgba(24,28,24,.34)}
 .tk img{position:absolute;top:0;left:-8%;width:116%;height:100%;max-width:none;object-fit:cover;-webkit-user-drag:none;user-select:none;will-change:translate;transition:scale .9s cubic-bezier(.2,.7,.2,1)}
 /* 被選中的作品：微微浮起、圖片放大，其他作品變淡 */
 .tk.is-hover{transform:translateY(-8px)}
@@ -190,14 +194,14 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
            例如 cover: "images/qingcao-cover.jpg"
            留空 "" 的地方會自動顯示灰色佔位圖。
    - 新增作品：複製 projects 裡一整個 { ... }，改 id 和內容。
-   - 分類：category 要對應下面 categories 的 id。
+   - 分類：category 要對應下面 categories 的 id（brand / event / logotype / poster / book / photo / playground）。
    ========================================================= */
 const SITE = {
   name: "李宜臻 / Yi-Zhen Lee",
   role: "Designer",
   avatar: "",            // 頭像，例如 "images/me.jpg"
   portrait: "",          // About 頁的大照片
-  disciplines: ["包裝設計","品牌識別","插畫","版面編排","攝影"],
+  disciplines: ["Brand Identity","Event Identity","Logotype","Poster","Book Design","Photography"],
   bio: [
     "（用兩三句話介紹你自己：你是誰、現在在哪裡讀書或工作。）",
     "（你喜歡做什麼樣的設計？有沒有特別在意的事情，例如從使用者的痛點出發、喜歡玩材質或手作感？）",
@@ -216,18 +220,20 @@ const SITE = {
     { group: "展覽", items: [["2026/05","（展覽名稱）"],["2025/12","（市集／聯展名稱）"]] }
   ],
   categories: [
-    { id: "packaging", label: "包裝設計", en: "Packaging" },
-    { id: "branding",  label: "品牌識別", en: "Branding" },
-    { id: "illust",    label: "插畫",     en: "Illustration" },
-    { id: "editorial", label: "版面編排", en: "Editorial" },
-    { id: "photo",     label: "攝影",     en: "Photography" }
+    { id: "brand",      label: "Brand Identity", zh: "品牌識別" },
+    { id: "event",      label: "Event Identity", zh: "活動識別" },
+    { id: "logotype",   label: "Logotype",       zh: "標準字設計" },
+    { id: "poster",     label: "Poster",         zh: "海報" },
+    { id: "book",       label: "Book Design",    zh: "書籍編排" },
+    { id: "photo",      label: "Photography",    zh: "攝影" },
+    { id: "playground", label: "Playground",     zh: "個人作品｜還在嘗試與練習中的東西" }
   ],
   projects: [
     {
       id: "qingcao",
       title: "青草巷｜袋裝青草飲禮盒",
       en: "Qingcao Alley Herbal Tea Packaging",
-      category: "packaging", year: "2026",
+      category: "brand", year: "2026",
       cover: "", ratio: "4/5",
       summary: "為龍山寺旁的青草巷設計的創意產品包裝。鎖定一群年輕人和他們的痛點，做成一盒裝有兩款袋裝、用泡的青草飲。",
       meta: [["類型","產品包裝"],["角色","（個人／小組，負責項目）"],["工具","（Illustrator、Photoshop…）"]],
@@ -239,20 +245,20 @@ const SITE = {
       ],
       images: ["","","",""]
     },
-    { id: "work-2", title: "作品二（範例）", en: "Project Two", category: "branding", year: "2025", cover: "", ratio: "1/1",
-      summary: "（一句話介紹這件作品。）", meta: [["類型","品牌識別"],["角色","（填寫）"]],
+    { id: "work-2", title: "作品二（範例）", en: "Project Two", category: "event", year: "2025", cover: "", ratio: "1/1",
+      summary: "（一句話介紹這件作品。）", meta: [["類型","活動識別"],["角色","（填寫）"]],
       sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] },
-    { id: "work-3", title: "作品三（範例）", en: "Project Three", category: "illust", year: "2025", cover: "", ratio: "3/4",
-      summary: "（一句話介紹這件作品。）", meta: [["類型","插畫"]],
+    { id: "work-3", title: "作品三（範例）", en: "Project Three", category: "logotype", year: "2025", cover: "", ratio: "3/4",
+      summary: "（一句話介紹這件作品。）", meta: [["類型","標準字設計"]],
       sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] },
-    { id: "work-4", title: "作品四（範例）", en: "Project Four", category: "editorial", year: "2024", cover: "", ratio: "4/3",
-      summary: "（一句話介紹這件作品。）", meta: [["類型","版面編排"]],
+    { id: "work-4", title: "作品四（範例）", en: "Project Four", category: "poster", year: "2024", cover: "", ratio: "4/3",
+      summary: "（一句話介紹這件作品。）", meta: [["類型","海報"]],
       sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] },
-    { id: "work-5", title: "作品五（範例）", en: "Project Five", category: "photo", year: "2024", cover: "", ratio: "3/4",
+    { id: "work-5", title: "作品五（範例）", en: "Project Five", category: "book", year: "2024", cover: "", ratio: "3/4",
+      summary: "（一句話介紹這件作品。）", meta: [["類型","書籍編排"]],
+      sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] },
+    { id: "work-6", title: "作品六（範例）", en: "Project Six", category: "photo", year: "2024", cover: "", ratio: "1/1",
       summary: "（一句話介紹這件作品。）", meta: [["類型","攝影"]],
-      sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] },
-    { id: "work-6", title: "作品六（範例）", en: "Project Six", category: "packaging", year: "2024", cover: "", ratio: "1/1",
-      summary: "（一句話介紹這件作品。）", meta: [["類型","包裝設計"]],
       sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] }
   ]
 };
@@ -283,7 +289,7 @@ function icon(url){
 }
 const extLink = s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${icon(s.url)}<span>${esc(s.label)}</span></a>`;
 
-const catOf = id => SITE.categories.find(c => c.id === id) || { label: id, en: id };
+const catOf = id => SITE.categories.find(c => c.id === id) || { label: id, zh: "" };
 const idx = id => SITE.projects.findIndex(p => p.id === id);
 
 function sidebar(route){
@@ -293,6 +299,7 @@ function sidebar(route){
   const link = (h, label, head) => `<li${head ? ' class="head"' : ""}><a href="#${h}" ${route === h ? 'aria-current="page"' : ""}>${esc(label)}</a></li>`;
   $("#nav").innerHTML = link("home", "Home", true)
     + `<li class="gap" aria-hidden="true"></li>`
+    + `<li class="head"><span>Works</span></li>`
     + SITE.categories.map(c => link(c.id, c.label)).join("")
     + `<li class="sep" aria-hidden="true"></li>` + link("about", "About", true);
   $("#social").innerHTML = SITE.socials.map(extLink).join("");
@@ -300,11 +307,11 @@ function sidebar(route){
 }
 
 function grid(list){
-  if (!list.length) return `<p class="empty">這個分類還沒有作品。</p>`;
+  if (!list.length) return `<p class="empty">Coming soon.</p>`;
   return `<div class="grid">${list.map(p => {
     const i = idx(p.id);
     return `<a class="card" href="#w-${p.id}"><div class="img"><img src="${p.cover || ph(p.title, p.ratio, i)}" alt="${esc(p.title)}" loading="lazy"></div>
-      <div class="cap"><div class="t"><span>./</span>${esc(p.title)}</div><div class="y">${esc(catOf(p.category).en)} · ${esc(p.year)}</div></div></a>`;
+      <div class="cap"><div class="t"><span>./</span>${esc(p.title)}</div><div class="y">${esc(catOf(p.category).label)} · ${esc(p.year)}</div></div></a>`;
   }).join("")}</div>`;
 }
 
@@ -316,7 +323,7 @@ function home(){
       <div class="cap"><div class="t"><span>./</span>${esc(p.title)}</div><div class="y">${esc(p.year)}</div></div></a>`;
   };
   const list = SITE.projects;
-  return `<p class="crumb">./works</p><h1 class="page-h">Selected Works</h1><p class="page-sub">${SITE.disciplines.map(esc).join("｜")}</p>
+  return `<p class="crumb">./works</p><h1 class="page-h">Selected Works</h1><p class="page-sub">${SITE.disciplines.map(esc).join(" / ")}</p>
     <div class="ticker" id="ticker"><div class="track">${list.map(p => item(p, false)).join("")}${list.map(p => item(p, true)).join("")}</div></div>`;
 }
 
@@ -342,7 +349,7 @@ const Cursor = (() => {
     requestAnimationFrame(loop);
   };
   requestAnimationFrame(loop);
-  return { setView(v){ view = v; } };
+  return { setView(v){ view = v; }, refresh(){ const t = document.elementFromPoint(tx, ty); link = !!(t && t.closest("a, button")); } };
 })();
 
 /* 作品帶自動滾動：無限循環、滑鼠移上暫停、可拖曳／滑動（放開後會順著慣性滑一段） */
@@ -385,7 +392,15 @@ function startTicker(){
     parallax();
     // 每格重新判斷滑鼠下方是哪件作品（作品在移動，不能只靠 :hover）
     const at = inside && isMouse && !drag ? document.elementFromPoint(mx, my)?.closest(".tk") : null;
-    if (at !== hoverCard) { hoverCard?.classList.remove("is-hover"); at?.classList.add("is-hover"); track.classList.toggle("has-hover", !!at); hoverCard = at; }
+    if (at !== hoverCard) {
+      if (hoverCard) { const f = hoverCard.querySelector(".img"); f.style.removeProperty("--rx"); f.style.removeProperty("--ry"); }
+      hoverCard?.classList.remove("is-hover"); at?.classList.add("is-hover"); track.classList.toggle("has-hover", !!at); hoverCard = at;
+    }
+    if (at && !reduce) {                          // 跟著滑鼠位置微微傾斜
+      const f = at.querySelector(".img"), r = f.getBoundingClientRect();
+      const px = Math.max(0, Math.min(1, (mx - r.left) / r.width)), py = Math.max(0, Math.min(1, (my - r.top) / r.height));
+      f.style.setProperty("--rx", `${((.5 - py) * 3).toFixed(2)}deg`); f.style.setProperty("--ry", `${((px - .5) * 4).toFixed(2)}deg`);
+    }
     Cursor.setView(!!at);
     if (touchUI) {                                // 找出最靠近畫面中間的作品
       let best = null, bd = Infinity;
@@ -440,7 +455,7 @@ function startTicker(){
   stopTicker = () => { Cursor.setView(false); cancelAnimationFrame(raf); clearTimeout(resumeT); ro.disconnect(); removeEventListener("pointermove", onMove); removeEventListener("pointerup", onUp); removeEventListener("pointercancel", onUp); stopTicker = () => {}; };
 }
 function category(c){
-  return `<p class="crumb"><a href="#home">./</a>${esc(c.id)}</p><h1 class="page-h">${esc(c.label)}</h1><p class="page-sub">${esc(c.en)}</p>${grid(SITE.projects.filter(p => p.category === c.id))}`;
+  return `<p class="crumb"><a href="#home">./</a>${esc(c.id)}</p><h1 class="page-h">${esc(c.label)}</h1><p class="page-sub">${esc(c.zh)}</p>${grid(SITE.projects.filter(p => p.category === c.id))}`;
 }
 function work(p){
   const i = idx(p.id), n = SITE.projects.length, prev = SITE.projects[(i - 1 + n) % n], next = SITE.projects[(i + 1) % n], c = catOf(p.category);
@@ -460,7 +475,7 @@ function about(){
     <img class="portrait" src="${SITE.portrait || ph("你的照片", "1/1", 1)}" alt="${esc(SITE.name)}">
     <div class="stack">
       <section><h1 class="page-h">${esc(SITE.name)}</h1><div class="role">${esc(SITE.role)}</div></section>
-      <section class="bio"><h2>About</h2><p class="disc">${SITE.disciplines.map(esc).join(" ｜ ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
+      <section class="bio"><h2>About</h2><p class="disc">${SITE.disciplines.map(esc).join(" / ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
       <section><h2>Email</h2><div class="mail"><code id="mail">${esc(SITE.email)}</code><button class="copy" id="copyBtn" type="button">複製</button></div></section>
       <section><h2>Follow</h2><div class="links">${SITE.socials.map(s => extLink({ label: s.url.replace(/^https?:\/\/(www\.)?/, ""), url: s.url })).join("")}</div><p class="note">${esc(SITE.contactNote)}</p></section>
       <section><h2>Experience</h2>${SITE.experience.map(g => `<div class="exp-group"><h3>［${esc(g.group)}。］</h3><ul>${g.items.map(([d, t]) => `<li><span>${esc(d)}</span><span>${esc(t)}</span></li>`).join("")}</ul></div>`).join("")}</section>
@@ -482,6 +497,7 @@ function render(){
   $("#side").classList.remove("open"); $("#menuBtn").setAttribute("aria-expanded", "false");
   window.scrollTo(0, 0);
   if ($("#ticker")) startTicker(); else stopTicker();
+  Cursor.refresh();
   const btn = $("#copyBtn");
   if (btn) btn.onclick = () => {
     const done = t => { btn.textContent = t; setTimeout(() => btn.textContent = "複製", 1600); };
