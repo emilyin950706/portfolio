@@ -315,7 +315,7 @@ function sidebar(route){
     + `<li class="gap" aria-hidden="true"></li>`
     + `<li class="head"><button class="nav-toggle" id="worksBtn" type="button" aria-expanded="${open}" aria-controls="worksSub">Works<span class="pm" aria-hidden="true"></span></button></li>`
     + `<li class="sub-wrap${open ? " open" : ""}" id="worksWrap"${open ? "" : " inert"}><ul class="sub" id="worksSub">${SITE.categories.map(c => link(c.id, c.label)).join("")}</ul></li>`
-    + `<li class="sep" aria-hidden="true"></li>` + link("about", "About", true);
+    + `<li class="sep" aria-hidden="true"></li>` + link("about", "About Zhen", true);
   $("#worksBtn").onclick = () => {
     const now = $("#worksBtn").getAttribute("aria-expanded") !== "true";
     worksOpen = now;
@@ -496,7 +496,7 @@ function about(){
     <img class="portrait" src="${SITE.portrait || ph("你的照片", "1/1", 1)}" alt="${esc(SITE.name)}">
     <div class="stack">
       <section><h1 class="page-h">${esc(SITE.name)}</h1><div class="role">${esc(SITE.role)}</div></section>
-      <section class="bio"><h2>About</h2><p class="disc">${SITE.disciplines.map(esc).join(" / ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
+      <section class="bio"><h2>About Zhen</h2><p class="disc">${SITE.disciplines.map(esc).join(" / ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
       <section><h2>Email</h2><div class="mail"><code id="mail">${esc(SITE.email)}</code><button class="copy" id="copyBtn" type="button">複製</button></div></section>
       <section><h2>Follow</h2><div class="links">${SITE.socials.map(s => extLink({ label: s.url.replace(/^https?:\/\/(www\.)?/, ""), url: s.url })).join("")}</div><p class="note">${esc(SITE.contactNote)}</p></section>
       <section><h2>Experience</h2>${SITE.experience.map(g => `<div class="exp-group"><h3>［${esc(g.group)}。］</h3><ul>${g.items.map(([d, t]) => `<li><span>${esc(d)}</span><span>${esc(t)}</span></li>`).join("")}</ul></div>`).join("")}</section>
