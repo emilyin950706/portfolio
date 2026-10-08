@@ -123,13 +123,17 @@ html.has-cursor .cursor.hide{opacity:0}
 .pager strong{font-weight:500;transition:color .2s}
 
 /* ---------- About ---------- */
-.about{display:grid;grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:56px;max-width:1040px}
+/* About 版面：手機一欄；平板／小筆電：照片＋內容兩欄；大螢幕：照片｜自介與聯絡｜經歷 三欄，避免右邊大片留白 */
+.about{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:48px 56px;align-items:start}
+.exp-col{grid-column:2}
+@media (min-width:821px){.portrait{position:sticky;top:40px}}
+@media (min-width:1200px){.about{grid-template-columns:minmax(0,260px) minmax(0,1fr) minmax(0,1.2fr)}.exp-col{grid-column:3;grid-row:1}}
 .portrait{width:100%;aspect-ratio:1;object-fit:cover;background:var(--soft)}
 .about h2{font-size:var(--s-xs);font-family:var(--font-mono);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .about section{display:flex;flex-direction:column}
 .stack{display:flex;flex-direction:column;gap:40px}
 .disc{font-size:var(--s-sm);letter-spacing:.06em;margin:0 0 16px;text-wrap:pretty}
-.bio p{margin:0 0 12px;max-width:34em}
+.bio p{margin:0 0 12px;max-width:42em}
 .mail{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .mail code{font-family:var(--font-mono);font-size:var(--s-sm);user-select:all;word-break:break-all}
 .copy{font:inherit;font-family:var(--font-mono);font-size:var(--s-xs);color:var(--muted);background:none;border:1px solid var(--line);border-radius:999px;padding:3px 12px;cursor:pointer;transition:.2s}
@@ -144,10 +148,10 @@ html.has-cursor .cursor.hide{opacity:0}
 .exp-group li{position:relative;padding-left:14px}
 .exp-group li::before{content:"";position:absolute;left:0;top:.72em;width:4px;height:4px;border-radius:50%;background:var(--muted)}
 .exp-group .t{display:block;font-weight:500}
-.exp-group .d{display:flex;flex-direction:column;gap:4px;margin-top:6px;color:var(--muted);max-width:40em}
+.exp-group .d{display:flex;flex-direction:column;gap:4px;margin-top:6px;color:var(--muted)}
 .exp-group .d b{font-weight:500;color:var(--fg)}
-.tagline{margin:12px 0 0;font-size:var(--s-sm);color:var(--muted);max-width:36em;text-wrap:pretty}
-.strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:16px}
+.tagline{margin:12px 0 0;font-size:var(--s-sm);color:var(--muted);text-wrap:pretty}
+.strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:16px}
 .strip img{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--soft)}
 
 footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color:var(--muted);padding-top:48px}
@@ -184,6 +188,8 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
   .side-body .nav .head a{font-size:var(--s-sm)}
   .side-body .social{font-size:var(--s-sm);gap:10px}
   .work-head,.about{grid-template-columns:minmax(0,1fr);gap:28px}
+  .exp-col{grid-column:auto}
+  .strip{gap:8px}
   .block{grid-template-columns:minmax(0,1fr);gap:4px}
 }
 @media (min-width:821px){.side{min-height:calc(100vh - 104px)}.side-body{flex:1;display:flex;flex-direction:column;gap:28px}footer{display:none}}
@@ -542,6 +548,8 @@ function about(){
       <section class="bio"><h2>About Zhen</h2><p class="disc">${SITE.disciplines.map(esc).join(" / ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
       <section><h2>Email</h2><div class="mail"><code id="mail">${esc(SITE.email)}</code><button class="copy" id="copyBtn" type="button">複製</button></div></section>
       <section><h2>Follow</h2><div class="links">${SITE.socials.map(s => extLink({ label: s.url.replace(/^https?:\/\/(www\.)?/, ""), url: s.url })).join("")}</div><p class="note">${esc(SITE.contactNote)}</p></section>
+    </div>
+    <div class="stack exp-col">
       <section><h2>Experience</h2>${SITE.experience.map(g => `<div class="exp-group"><h3>${esc(g.group)}</h3><ul>${g.items.map(expItem).join("")}</ul></div>`).join("")}</section>
     </div>
     <div class="strip">${SITE.projects.slice(0, 5).map((p, i) => `<a href="#w-${p.id}"><img src="${p.cover || ph(p.title, "3/4", i)}" alt="${esc(p.title)}" loading="lazy"></a>`).join("")}</div>
