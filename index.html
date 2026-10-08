@@ -65,13 +65,14 @@ main{min-width:0;animation:in .35s ease both}
 .empty{color:var(--muted);font-size:var(--s-sm);padding:40px 0}
 
 /* ---------- 首頁：自動滾動作品帶 ---------- */
-.ticker{--H:clamp(260px,62vh,620px);overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.ticker{--H:clamp(260px,62vh,620px);padding-top:10px;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .ticker.dragging{cursor:grabbing}
 .track{display:flex;align-items:flex-start;gap:28px;width:max-content;will-change:transform;backface-visibility:hidden}
-/* 每件作品大小、高低錯落：--s 是相對大小，--o 是往下偏移的比例 */
-.tk{flex:none;display:flex;flex-direction:column;gap:10px;margin-top:calc(var(--H) * (1 - var(--s)) * var(--o));-webkit-user-drag:none;transition:opacity .45s ease,filter .45s ease}
-.tk .img{position:relative;height:calc(var(--H) * var(--s));max-width:none;overflow:hidden;background:var(--soft)}
+.tk{flex:none;display:flex;flex-direction:column;gap:10px;-webkit-user-drag:none;transition:opacity .45s ease,filter .45s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
+.tk .img{position:relative;height:var(--H);max-width:none;overflow:hidden;background:var(--soft)}
 .tk img{position:absolute;top:0;left:-8%;width:116%;height:100%;max-width:none;object-fit:cover;-webkit-user-drag:none;user-select:none;will-change:translate;transition:scale .9s cubic-bezier(.2,.7,.2,1)}
+/* 被選中的作品：微微浮起、圖片放大，其他作品變淡 */
+.tk.is-hover{transform:translateY(-8px)}
 .tk.is-hover img{scale:1.05}
 .track.has-hover .tk:not(.is-hover){opacity:.25;filter:grayscale(.8)}
 .tk .cap{margin-top:0;width:0;min-width:100%;transition:color .3s}
@@ -291,10 +292,9 @@ function grid(list){
 }
 
 function home(){
-  const LAYOUT = [[1, 0], [.7, 1], [.84, .3], [.62, .78], [.92, .12], [.74, .58]];   // [大小, 往下偏移]
   const item = (p, dup) => {
-    const i = idx(p.id), [sc, off] = LAYOUT[i % LAYOUT.length];
-    return `<a class="tk" href="#w-${p.id}" style="--s:${sc};--o:${off}" draggable="false" ${dup ? 'aria-hidden="true" tabindex="-1"' : ""}>
+    const i = idx(p.id);
+    return `<a class="tk" href="#w-${p.id}" draggable="false" ${dup ? 'aria-hidden="true" tabindex="-1"' : ""}>
       <div class="img" style="aspect-ratio:${esc(p.ratio || "4/5")}"><img src="${p.cover || ph(p.title, p.ratio, i)}" alt="${dup ? "" : esc(p.title)}" draggable="false"></div>
       <div class="cap"><div class="t"><span>./</span>${esc(p.title)}</div><div class="y">${esc(p.year)}</div></div></a>`;
   };
