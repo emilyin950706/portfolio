@@ -7,18 +7,16 @@
 <title>設計作品集</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 <style>
-/* Layout: 左側固定側欄（頭像、名字、分類目錄）＋ 右側作品瀑布流；手機版側欄收成頂部選單 */
+/* Layout: 左側固定側欄（頭像、名字、分類目錄）＋ 右側作品；手機版側欄收成頂部選單。固定白底單一主題 */
 :root{
-  --bg:#fafaf8; --fg:#1c1e1b; --muted:#7c8179; --line:#e5e7e2; --accent:#4f6f53; --soft:#eef1ec;
-  --font-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
-  --font-mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --bg:#ffffff; --fg:#1c1e1b; --muted:#7c8179; --line:#e8e9e6; --accent:#4f6f53; --soft:#f2f3f0; color-scheme:light;
+  /* 英文一律 Inter Tight，中文落到 Noto Sans TC */
+  --font-body:"Inter Tight","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --font-mono:var(--font-body);
   --s-xs:11px; --s-sm:13px; --s-md:15px; --s-lg:20px; --s-xl:28px;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#131512; --fg:#e8eae6; --muted:#979c94; --line:#272b26; --accent:#9fbea2; --soft:#1c1f1b; color-scheme:dark;}}
-:root[data-theme="dark"]{--bg:#131512; --fg:#e8eae6; --muted:#979c94; --line:#272b26; --accent:#9fbea2; --soft:#1c1f1b; color-scheme:dark;}
 
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:var(--s-md);line-height:1.75;-webkit-font-smoothing:antialiased}
@@ -185,7 +183,7 @@ const SITE = {
   ],
   email: "your.email@example.com",
   socials: [
-    { label: "Instagram", url: "https://www.instagram.com/" },
+    { label: "Linktree",  url: "https://linktr.ee/emily950706" },
     { label: "Behance",   url: "https://www.behance.net/emilylee56" }
   ],
   contactNote: "若有合作或實習機會，歡迎與我聯繫。",
@@ -249,6 +247,7 @@ function ph(label, ratio = "4/3", i = 0){
 }
 /* 外部連結的線條 icon：依網址自動判斷網站 */
 const ICONS = {
+  linktree: '<path d="M4 10h16"/><path d="M6.5 4.5l11 11"/><path d="M6.5 15.5l11-11"/><path d="M12 10V2"/><path d="M12 15v7"/>',
   instagram: '<rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.5"/><path d="M16.5 7.5v.01"/>',
   behance: '<path d="M3 18V6h4.5a3 3 0 0 1 0 6a3 3 0 0 1 0 6H3"/><path d="M3 12h4.5"/><path d="M14 13h7a3.5 3.5 0 0 0-7 0v2a3.5 3.5 0 0 0 6.64 1"/><path d="M16 6h3"/>',
   dribbble: '<circle cx="12" cy="12" r="9"/><path d="M9 3.6c5 6 7 10.5 7.5 16.2"/><path d="M6.4 19c3.5-3.5 6-6.5 14.5-6.4"/><path d="M3.1 10.75c5 0 9.814-.38 15.314-5"/>',
@@ -256,7 +255,8 @@ const ICONS = {
   link: '<path d="M9 15l6-6"/><path d="M11 6l.46-.54a5 5 0 0 1 7.07 7.07L18 13"/><path d="M13 18l-.4.53a5.07 5.07 0 0 1-7.12 0a4.97 4.97 0 0 1 0-7.07L6 11"/>'
 };
 function icon(url){
-  const k = Object.keys(ICONS).find(n => n !== "link" && url.includes(n)) || "link";
+  const match = { linktree: "linktr.ee", instagram: "instagram.com", behance: "behance.net", dribbble: "dribbble.com", linkedin: "linkedin.com" };
+  const k = Object.keys(match).find(n => url.includes(match[n])) || "link";
   return `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[k]}</svg>`;
 }
 const extLink = s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${icon(s.url)}<span>${esc(s.label)}</span></a>`;
