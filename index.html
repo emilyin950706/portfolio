@@ -79,7 +79,8 @@ main{min-width:0;animation:in .35s ease both}
 .empty{color:var(--muted);font-size:var(--s-sm);padding:40px 0}
 
 /* ---------- 首頁：自動滾動作品帶 ---------- */
-.ticker{--H:clamp(260px,62vh,620px);padding-top:12px;padding-bottom:44px;margin-bottom:-24px;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+/* 左右兩側柔和淡出：寬一點、用緩和曲線，避免邊緣看起來像一刀切 */
+.ticker{-webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.04) 1%,rgba(0,0,0,.16) 2.5%,rgba(0,0,0,.38) 4%,rgba(0,0,0,.64) 5.5%,rgba(0,0,0,.86) 7%,#000 9%,#000 91%,rgba(0,0,0,.86) 93%,rgba(0,0,0,.64) 94.5%,rgba(0,0,0,.38) 96%,rgba(0,0,0,.16) 97.5%,rgba(0,0,0,.04) 99%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.04) 1%,rgba(0,0,0,.16) 2.5%,rgba(0,0,0,.38) 4%,rgba(0,0,0,.64) 5.5%,rgba(0,0,0,.86) 7%,#000 9%,#000 91%,rgba(0,0,0,.86) 93%,rgba(0,0,0,.64) 94.5%,rgba(0,0,0,.38) 96%,rgba(0,0,0,.16) 97.5%,rgba(0,0,0,.04) 99%,transparent 100%);--H:clamp(260px,62vh,620px);padding-top:12px;padding-bottom:44px;margin-bottom:-24px;overflow:hidden;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
 .ticker.dragging{cursor:grabbing}
 .track{display:flex;align-items:flex-start;gap:28px;width:max-content;will-change:transform;backface-visibility:hidden}
 .tk{flex:none;display:flex;flex-direction:column;gap:10px;-webkit-user-drag:none;transition:opacity .45s ease,filter .45s ease,transform .5s cubic-bezier(.2,.7,.2,1)}
