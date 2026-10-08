@@ -246,6 +246,7 @@ const SITE = {
     "在校期間三度獲得書卷獎，具備穩定的自律性與研究能力，期許自己在團隊協作中，發揮細節敏銳度與企劃執行力。"
   ],
   email: "emilyin950706@gmail.com",
+  phone: "+886-982-620-366",
   socials: [
     { label: "Linktree",  url: "https://linktr.ee/emily950706" },
     { label: "Behance",   url: "https://www.behance.net/emilylee56" }
@@ -552,7 +553,8 @@ function about(){
     <div class="stack">
       <section><h1 class="page-h">${esc(SITE.name)}</h1><div class="role">${esc(SITE.role)}</div><p class="tagline">${esc(SITE.tagline)}</p></section>
       <section class="bio"><h2>About Zhen</h2><p class="disc">${SITE.disciplines.map(esc).join(" / ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
-      <section><h2>Email</h2><div class="mail"><code id="mail">${esc(SITE.email)}</code><button class="copy" id="copyBtn" type="button">複製</button></div></section>
+      <section><h2>Email</h2><div class="mail"><code id="mail">${esc(SITE.email)}</code><button class="copy" type="button" data-copy="mail">複製</button></div></section>
+      <section><h2>Phone</h2><div class="mail"><a href="tel:${esc(SITE.phone.replace(/[^+\d]/g, ""))}"><code id="phone">${esc(SITE.phone)}</code></a><button class="copy" type="button" data-copy="phone">複製</button></div></section>
       <section><h2>Follow</h2><div class="links">${SITE.socials.map(s => extLink({ label: s.url.replace(/^https?:\/\/(www\.)?/, ""), url: s.url })).join("")}</div><p class="note">${esc(SITE.contactNote)}</p></section>
     </div>
     <div class="stack exp-col">
@@ -576,12 +578,12 @@ function render(){
   window.scrollTo(0, 0);
   if ($("#ticker")) startTicker(); else stopTicker();
   Cursor.refresh();
-  const btn = $("#copyBtn");
-  if (btn) btn.onclick = () => {
+  document.querySelectorAll("[data-copy]").forEach(btn => btn.onclick = () => {
+    const el = $("#" + btn.dataset.copy), text = el.textContent;
     const done = t => { btn.textContent = t; setTimeout(() => btn.textContent = "複製", 1600); };
-    const sel = () => { const r = document.createRange(); r.selectNodeContents($("#mail")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done("已選取"); };
-    try { navigator.clipboard.writeText(SITE.email).then(() => done("已複製"), sel); } catch (e) { sel(); }
-  };
+    const sel = () => { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done("已選取"); };
+    try { navigator.clipboard.writeText(text).then(() => done("已複製"), sel); } catch (e) { sel(); }
+  });
 }
 function setMenu(o){
   $("#side").classList.toggle("open", o);
