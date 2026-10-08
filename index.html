@@ -128,7 +128,7 @@ html.has-cursor .cursor.hide{opacity:0}
 .about h2{font-size:var(--s-xs);font-family:var(--font-mono);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .about section{display:flex;flex-direction:column}
 .stack{display:flex;flex-direction:column;gap:40px}
-.disc{font-size:var(--s-sm);letter-spacing:.06em;margin:0 0 16px}
+.disc{font-size:var(--s-sm);letter-spacing:.06em;margin:0 0 16px;text-wrap:pretty}
 .bio p{margin:0 0 12px;max-width:34em}
 .mail{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .mail code{font-family:var(--font-mono);font-size:var(--s-sm);user-select:all;word-break:break-all}
@@ -137,11 +137,15 @@ html.has-cursor .cursor.hide{opacity:0}
 .links{display:flex;flex-direction:column;gap:4px;font-family:var(--font-mono);font-size:var(--s-sm)}
 .links a{color:var(--muted);word-break:break-all}.links a:hover{color:var(--fg)}
 .note{font-size:var(--s-sm);color:var(--muted);margin:12px 0 0}
-.exp-group{margin:0 0 20px}
+.exp-group{margin:0 0 26px}
 .exp-group h3{font-size:var(--s-sm);font-weight:500;margin:0 0 6px}
-.exp-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:var(--s-sm)}
-.exp-group li{display:grid;grid-template-columns:132px minmax(0,1fr);gap:8px}
-.exp-group li span:first-child{font-family:var(--font-mono);font-size:var(--s-xs);color:var(--muted);padding-top:2px;font-variant-numeric:tabular-nums}
+.exp-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:var(--s-sm);line-height:1.65}
+.exp-group li{position:relative;padding-left:14px}
+.exp-group li::before{content:"";position:absolute;left:0;top:.72em;width:4px;height:4px;border-radius:50%;background:var(--muted)}
+.exp-group .t{display:block;font-weight:500}
+.exp-group .d{display:flex;flex-direction:column;gap:4px;margin-top:6px;color:var(--muted);max-width:40em}
+.exp-group .d b{font-weight:500;color:var(--fg)}
+.tagline{margin:12px 0 0;font-size:var(--s-sm);color:var(--muted);max-width:36em;text-wrap:pretty}
 .strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:16px}
 .strip img{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--soft)}
 
@@ -177,7 +181,6 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
   .side-body .social{font-size:var(--s-sm);gap:10px}
   .work-head,.about{grid-template-columns:minmax(0,1fr);gap:28px}
   .block{grid-template-columns:minmax(0,1fr);gap:4px}
-  .exp-group li{grid-template-columns:minmax(0,1fr);gap:0}
 }
 @media (min-width:821px){.side-body{display:flex;flex-direction:column;gap:28px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -221,22 +224,51 @@ const SITE = {
   avatar: "",            // 頭像，例如 "images/me.jpg"
   portrait: "",          // About 頁的大照片
   disciplines: ["Brand Identity","Event Identity","Logotype","Poster","Book Design","Photography"],
+  tagline: "臺灣科技大學設計系｜現任設計系學會副會長｜善於設計企劃、品牌設計、攝影相關",
   bio: [
-    "（用兩三句話介紹你自己：你是誰、現在在哪裡讀書或工作。）",
-    "（你喜歡做什麼樣的設計？有沒有特別在意的事情，例如從使用者的痛點出發、喜歡玩材質或手作感？）",
-    "（未來想往哪個方向發展。）"
+    "專注於設計企劃、品牌視覺與影像紀錄。我習慣細緻觀察身邊的人事物，並透過文字梳理邏輯與脈絡，將抽象的觀察轉化為具體的設計概念。",
+    "在校期間三度獲得書卷獎，具備穩定的自律性與研究能力，期許自己在團隊協作中，發揮細節敏銳度與企劃執行力。"
   ],
-  email: "your.email@example.com",
+  email: "emilyin950706@gmail.com",
   socials: [
     { label: "Linktree",  url: "https://linktr.ee/emily950706" },
     { label: "Behance",   url: "https://www.behance.net/emilylee56" }
   ],
   contactNote: "若有合作或實習機會，歡迎與我聯繫。",
+  /* 經歷：一般項目直接寫一行字；需要補充說明的寫成 { t: "標題", d: ["說明｜內容", ...] } */
   experience: [
-    { group: "學歷", items: [["2023 – 2027","（學校）（科系）"]] },
-    { group: "獎項", items: [["2026/05","（獎項名稱）《作品名》"],["2025/11","（獎項名稱）《作品名》"]] },
-    { group: "實習", items: [["2026/07 – 08","（公司）（職稱）"]] },
-    { group: "展覽", items: [["2026/05","（展覽名稱）"],["2025/12","（市集／聯展名稱）"]] }
+    { group: "學歷", items: [
+      "臺灣科技大學 設計系",
+      "臺灣科技大學 設計系學會 副會長"
+    ] },
+    { group: "獲獎", items: [
+      "獲選桃園市青年事務局「2024日本國際設計學群體驗學習營」代表團成員",
+      "115年 吳鴻麟先生紀念獎學金",
+      "113-2｜114-1｜114-2 書卷獎",
+      "2023 桃園設計獎 高中職組平面設計類 金獎",
+      "2024 A+文化資產創意獎 學生組視覺傳達設計類 入圍",
+      "110學年度 全國高級中等學校學生校園刊物競賽 銀質獎",
+      "110學年度 全國高級中等學校閱讀心得寫作比賽 優等"
+    ] },
+    { group: "參賽", items: [
+      "2023 桃園設計獎｜擔任專案統籌、企劃書撰寫",
+      "2024 A+文化資產創意獎｜擔任專案統籌、展位場佈",
+      "2023 臺灣國際學生創意設計大賽｜擔任專案統籌"
+    ] },
+    { group: "活動", items: [
+      { t: "115屆 臺灣科技大學設計系學會 會長組", d: [
+        "組織營運與溝通｜擔任系上師生與系學會各部門之溝通樞紐，統籌意見反饋機制與公共事務運作",
+        "專案統籌與時程管理｜主導大型活動前期企劃、跨組協調與進度控管，確保專案與活動如期完成"
+      ] },
+      { t: "2025 臺灣科技大學設計營", d: [
+        "影像敘事與動態宣傳｜負責營隊動靜態影像記錄，獨立完成活動宣傳片剪輯與隊輔照視覺後製，提升營隊形象與社群曝光",
+        "場地佈置與道具協作｜協同團隊執行現場空間佈置，並參與實體互動道具製作，協助確保活動流程與展演體驗順暢"
+      ] }
+    ] },
+    { group: "研習與課程", items: [
+      "2023 桃園市政府青年事務局「日本國際設計學群體驗學習營」",
+      "114-1 即時編碼課程（EMI）"
+    ] }
   ],
   categories: [
     { id: "brand",      label: "Brand Identity", zh: "品牌識別" },
@@ -488,16 +520,21 @@ function work(p){
     <nav class="pager"><a href="#w-${prev.id}"><small>← Prev</small><strong>${esc(prev.title)}</strong></a><a href="#w-${next.id}"><small>Next →</small><strong>${esc(next.title)}</strong></a></nav>
   </article>`;
 }
+// 「標題｜內容」：把｜前面的字加粗
+const pipe = str => { const k = str.indexOf("｜"); return k < 0 ? esc(str) : `<b>${esc(str.slice(0, k))}</b>｜${esc(str.slice(k + 1))}`; };
+const expItem = it => typeof it === "string"
+  ? `<li>${esc(it)}</li>`
+  : `<li><span class="t">${esc(it.t)}</span><span class="d">${it.d.map(x => `<span>${pipe(x)}</span>`).join("")}</span></li>`;
 function about(){
   return `<p class="crumb"><a href="#home">./</a>about</p>
   <div class="about">
     <img class="portrait" src="${SITE.portrait || ph("你的照片", "1/1", 1)}" alt="${esc(SITE.name)}">
     <div class="stack">
-      <section><h1 class="page-h">${esc(SITE.name)}</h1><div class="role">${esc(SITE.role)}</div></section>
+      <section><h1 class="page-h">${esc(SITE.name)}</h1><div class="role">${esc(SITE.role)}</div><p class="tagline">${esc(SITE.tagline)}</p></section>
       <section class="bio"><h2>About Zhen</h2><p class="disc">${SITE.disciplines.map(esc).join(" / ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
       <section><h2>Email</h2><div class="mail"><code id="mail">${esc(SITE.email)}</code><button class="copy" id="copyBtn" type="button">複製</button></div></section>
       <section><h2>Follow</h2><div class="links">${SITE.socials.map(s => extLink({ label: s.url.replace(/^https?:\/\/(www\.)?/, ""), url: s.url })).join("")}</div><p class="note">${esc(SITE.contactNote)}</p></section>
-      <section><h2>Experience</h2>${SITE.experience.map(g => `<div class="exp-group"><h3>［${esc(g.group)}。］</h3><ul>${g.items.map(([d, t]) => `<li><span>${esc(d)}</span><span>${esc(t)}</span></li>`).join("")}</ul></div>`).join("")}</section>
+      <section><h2>Experience</h2>${SITE.experience.map(g => `<div class="exp-group"><h3>［${esc(g.group)}。］</h3><ul>${g.items.map(expItem).join("")}</ul></div>`).join("")}</section>
     </div>
     <div class="strip">${SITE.projects.slice(0, 5).map((p, i) => `<a href="#w-${p.id}"><img src="${p.cover || ph(p.title, "3/4", i)}" alt="${esc(p.title)}" loading="lazy"></a>`).join("")}</div>
   </div>`;
