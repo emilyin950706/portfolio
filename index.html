@@ -146,9 +146,15 @@ html.has-cursor .cursor.hide{opacity:0}
 .exp-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:var(--s-sm);line-height:1.7}
 .exp-group li{position:relative;padding-left:14px}
 .exp-group li::before{content:"";position:absolute;left:0;top:.72em;width:4px;height:4px;border-radius:50%;background:var(--muted)}
+/* 經歷區塊：標題一行，底下用一條細線把說明收在一起；小標和說明分兩行，不再用粗體和｜ */
+.exp-group li.entry{padding-left:0}
+.exp-group li.entry::before{display:none}
+.exp-group li.entry + li.entry{margin-top:14px}
 .exp-group .t{display:block;font-weight:500}
-.exp-group .d{display:flex;flex-direction:column;gap:4px;margin-top:6px;color:var(--muted)}
-.exp-group .d b{font-weight:500;color:var(--fg)}
+.exp-group .d{display:flex;flex-direction:column;gap:10px;margin-top:8px;padding-left:12px;border-left:1px solid var(--line)}
+.exp-group .row{display:flex;flex-direction:column}
+.exp-group .k{color:var(--fg)}
+.exp-group .v{color:var(--muted)}
 .tagline{margin:12px 0 0;font-size:var(--s-sm);line-height:1.7;color:var(--muted);text-wrap:pretty}
 .strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:16px}
 .strip img{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--soft)}
@@ -534,10 +540,11 @@ function work(p){
   </article>`;
 }
 // 「標題｜內容」：把｜前面的字加粗
-const pipe = str => { const k = str.indexOf("｜"); return k < 0 ? esc(str) : `<b>${esc(str.slice(0, k))}</b>｜${esc(str.slice(k + 1))}`; };
+// 「小標｜說明」拆成兩行：小標一行、說明一行
+const detail = str => { const k = str.indexOf("｜"); return k < 0 ? `<span class="v">${esc(str)}</span>` : `<span class="k">${esc(str.slice(0, k))}</span><span class="v">${esc(str.slice(k + 1))}</span>`; };
 const expItem = it => typeof it === "string"
   ? `<li>${esc(it)}</li>`
-  : `<li><span class="t">${esc(it.t)}</span><span class="d">${it.d.map(x => `<span>${pipe(x)}</span>`).join("")}</span></li>`;
+  : `<li class="entry"><span class="t">${esc(it.t)}</span><span class="d">${it.d.map(x => `<span class="row">${detail(x)}</span>`).join("")}</span></li>`;
 function about(){
   return `<p class="crumb"><a href="#home">./</a>about</p>
   <div class="about">
