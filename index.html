@@ -127,7 +127,8 @@ html.has-cursor .cursor.hide{opacity:0}
 .about{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:48px 56px;align-items:start}
 .exp-col{grid-column:2}
 @media (min-width:821px){.portrait{position:sticky;top:40px}}
-@media (min-width:1200px){.about{grid-template-columns:minmax(0,260px) minmax(0,1fr) minmax(0,1.2fr)}.exp-col{grid-column:3;grid-row:1}}
+/* 大螢幕：自介欄和經歷欄之間拉開距離，中間加一條細直線，形成兩個版面 */
+@media (min-width:1200px){.about{grid-template-columns:minmax(0,220px) minmax(0,1fr) minmax(0,1.4fr);column-gap:48px}.exp-col{grid-column:3;grid-row:1;align-self:stretch;margin-left:24px;padding-left:48px;border-left:1px solid var(--line)}}
 .portrait{width:100%;aspect-ratio:1;object-fit:cover;background:var(--soft)}
 .about h2{font-size:var(--s-xs);font-family:var(--font-mono);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .about section{display:flex;flex-direction:column}
@@ -143,7 +144,7 @@ html.has-cursor .cursor.hide{opacity:0}
 .links a{color:var(--muted);word-break:break-all}.links a:hover{color:var(--fg)}
 .note{font-size:var(--s-sm);color:var(--muted);margin:12px 0 0}
 .exp-group{margin:0}
-.exp-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:var(--s-sm);line-height:1.7}
+.exp-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:var(--s-sm);line-height:1.7;text-wrap:pretty}
 .exp-group li{position:relative;padding-left:14px}
 .exp-group li::before{content:"";position:absolute;left:0;top:.72em;width:4px;height:4px;border-radius:50%;background:var(--muted)}
 /* 經歷區塊：標題一行，底下用一條細線把說明收在一起；小標和說明分兩行，不再用粗體和｜ */
