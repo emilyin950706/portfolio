@@ -159,7 +159,12 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
   .id{flex-direction:row;align-items:center;gap:12px}
   .avatar{width:44px;height:44px}
   .name{font-size:var(--s-md)}
-  .menu-btn{display:inline-flex;margin-left:auto;font:inherit;font-family:var(--font-mono);font-size:var(--s-xs);background:none;color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:4px 14px;cursor:pointer}
+  /* 三條線的選單按鈕，打開時變成 × */
+  .menu-btn{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;margin-left:auto;margin-right:-10px;padding:0;background:none;border:0;cursor:pointer;color:var(--fg)}
+  .menu-btn span{display:block;width:20px;height:1.5px;border-radius:2px;background:currentColor;transition:transform .4s cubic-bezier(.2,.7,.2,1),opacity .2s ease}
+  .side.open .menu-btn span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+  .side.open .menu-btn span:nth-child(2){opacity:0}
+  .side.open .menu-btn span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
   /* 點 Menu：霧面玻璃全螢幕選單淡入，項目依序浮現 */
   .side-body{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column;gap:32px;padding:calc(env(safe-area-inset-top,0px) + 100px) 18px calc(env(safe-area-inset-bottom,0px) + 40px);overflow-y:auto;background:rgba(255,255,255,.8);-webkit-backdrop-filter:blur(30px) saturate(1.5);backdrop-filter:blur(30px) saturate(1.5);opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s linear .4s}
   .side.open .side-body{opacity:1;visibility:visible;transition:opacity .4s ease,visibility 0s}
@@ -187,7 +192,7 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
         <p class="name" id="name"></p>
         <div class="role" id="role"></div>
       </div>
-      <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="sideBody">Menu</button>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sideBody" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
     <div class="side-body" id="sideBody">
       <ul class="nav" id="nav"></ul>
@@ -520,7 +525,7 @@ function render(){
 function setMenu(o){
   $("#side").classList.toggle("open", o);
   $("#menuBtn").setAttribute("aria-expanded", o);
-  $("#menuBtn").textContent = o ? "Close" : "Menu";
+  $("#menuBtn").setAttribute("aria-label", o ? "Close menu" : "Open menu");
   document.documentElement.style.overflow = o ? "hidden" : "";
   // 讓選單項目依序浮現
   [...document.querySelectorAll("#nav > li, #social > a")].forEach((el, k) => el.style.setProperty("--i", k));
