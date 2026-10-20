@@ -305,6 +305,8 @@ const SITE = {
   projects: [
     {
       "id": "are-you-full",
+      "coverHi": "https://mir-s3-cdn-cf.behance.net/projects/source/6b0451252708263.Y3JvcCwzMjc4LDI1NjQsNjA4LDIxOQ.jpg",
+      "coverHiW": 4500,
       "title": "ARE YOU FULL?",
       "en": "Poster Series",
       "category": "poster",
@@ -343,6 +345,8 @@ const SITE = {
     },
     {
       "id": "hakka-tea",
+      "coverHi": "https://mir-s3-cdn-cf.behance.net/project_modules/max_3840_webp/192c39251048871.6a2d4af57421e.jpg",
+      "coverHiW": 3840,
       "title": "台灣客家茶文化館",
       "en": "Taiwan Hakka Tea Culture Museum",
       "category": "brand",
@@ -394,6 +398,8 @@ const SITE = {
     },
     {
       "id": "perchtime",
+      "coverHi": "https://mir-s3-cdn-cf.behance.net/projects/source/f638f5250668485.Y3JvcCwzMzY4LDI2MzQsMCww.jpg",
+      "coverHiW": 3368,
       "title": "棲時 Perchtime.",
       "en": "Dessert Brand Identity",
       "category": "brand",
@@ -444,6 +450,8 @@ const SITE = {
     },
     {
       "id": "sanxia-indigo",
+      "coverHi": "https://mir-s3-cdn-cf.behance.net/project_modules/max_3840_webp/cef608240880135.694a65d898e21.jpg",
+      "coverHiW": 3840,
       "title": "藍染拾光｜三峽藍染節",
       "en": "Sanxia Indigo Dyeing Festival",
       "category": "event",
@@ -565,6 +573,19 @@ function icon(url){
 }
 const extLink = s => `<a href="${esc(s.url)}" target="_blank" rel="noopener">${icon(s.url)}<span>${esc(s.label)}</span></a>`;
 
+
+/* 圖片解析度：一般螢幕載入中等尺寸，Retina 等高解析度螢幕自動改載入大圖 */
+const coverAttrs = (p, i, sizes) => {
+  if (!p.cover) return `src="${ph(p.title, p.ratio, i)}"`;
+  const set = p.coverHi ? ` srcset="${esc(p.cover)} 808w, ${esc(p.coverHi)} ${p.coverHiW}w" sizes="${sizes}"` : "";
+  return `src="${esc(p.cover)}"${set}`;
+};
+const modAttrs = url => {
+  const m = String(url).match(/project_modules\/[^/]+\/(.+)$/);
+  if (!m) return `src="${esc(url)}"`;
+  const b = "https://mir-s3-cdn-cf.behance.net/project_modules/";
+  return `src="${b}1400_webp/${m[1]}" srcset="${b}1400_webp/${m[1]} 1400w, ${b}max_3840_webp/${m[1]} 3840w" sizes="(min-width: 821px) calc(100vw - 360px), 100vw"`;
+};
 const catOf = id => SITE.categories.find(c => c.id === id) || { label: id, zh: "" };
 const idx = id => SITE.projects.findIndex(p => p.id === id);
 
@@ -585,7 +606,7 @@ function grid(list){
   if (!list.length) return `<p class="empty">Coming soon.</p>`;
   return `<div class="grid">${list.map(p => {
     const i = idx(p.id);
-    return `<a class="card" href="#w-${p.id}"><div class="img"><img src="${p.cover || ph(p.title, p.ratio, i)}" alt="${esc(p.title)}" loading="lazy"></div>
+    return `<a class="card" href="#w-${p.id}"><div class="img"><img ${coverAttrs(p, i, "(min-width: 821px) 33vw, 100vw")} alt="${esc(p.title)}" loading="lazy"></div>
       <div class="cap"><div class="t"><span>./</span>${esc(p.title)}</div><div class="y">${esc(catOf(p.category).label)} · ${esc(p.year)}</div></div></a>`;
   }).join("")}</div>`;
 }
@@ -594,7 +615,7 @@ function home(){
   const item = (p, dup) => {
     const i = idx(p.id);
     return `<a class="tk" href="#w-${p.id}" draggable="false" ${dup ? 'aria-hidden="true" tabindex="-1"' : ""}>
-      <div class="img" style="aspect-ratio:${esc(p.ratio || "4/5")}"><img src="${p.cover || ph(p.title, p.ratio, i)}" alt="${dup ? "" : esc(p.title)}" draggable="false"></div>
+      <div class="img" style="aspect-ratio:${esc(p.ratio || "4/5")}"><img ${coverAttrs(p, i, "(max-width: 820px) 70vw, 800px")} alt="${dup ? "" : esc(p.title)}" draggable="false"></div>
       <div class="cap"><div class="t"><span>./</span>${esc(p.title)}</div><div class="y">${esc(p.year)}</div></div></a>`;
   };
   const list = SITE.projects;
@@ -744,10 +765,10 @@ function work(p){
     <p class="crumb"><a href="#home">./</a><a href="#${c.id}">${esc(c.id)}</a>/${esc(p.id)}</p>
     <div class="work-head"><div><h1 class="page-h">${esc(p.title)}</h1><p class="en">${esc(p.en)} — ${esc(p.year)}</p><p class="summary">${esc(p.summary)}</p></div>
       <dl class="meta">${[["年份", p.year], ...(p.meta || [])].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}${p.prototype ? `<dt>Prototype</dt><dd><a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">開啟互動原型 ↗</a></dd>` : ""}${p.behance ? `<dt>Behance</dt><dd><a class="ext" href="${esc(p.behance)}" target="_blank" rel="noopener">查看完整專案 ↗</a></dd>` : ""}</dl></div>
-    ${imgs.length ? `<div class="gallery"><img src="${esc(imgs[0])}" alt="${esc(p.title)}"></div>` : `<div class="gallery"><img src="${ph(p.title, p.ratio, i)}" alt="${esc(p.title)}"></div>`}
+    ${imgs.length ? `<div class="gallery"><img ${modAttrs(imgs[0])} alt="${esc(p.title)}"></div>` : `<div class="gallery"><img src="${ph(p.title, p.ratio, i)}" alt="${esc(p.title)}"></div>`}
     ${(p.sections || []).length ? `<div class="blocks">${p.sections.map(s => `<div class="block"><h3>${esc(s.h)}</h3><p>${esc(s.p)}</p></div>`).join("")}</div>` : ""}
     ${p.prototype ? `<section class="proto"><h3>Interactive Prototype</h3><div class="proto-frame" id="protoFrame"><iframe src="https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(p.prototype)}" title="${esc(p.title)} 互動原型" loading="lazy" allowfullscreen></iframe><button class="proto-cover" id="protoCover" type="button"><span>點一下開始操作原型</span></button></div><p>滑鼠移出原型範圍就會恢復捲動頁面；畫面太小時，<a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">在 Figma 開啟完整原型 ↗</a></p></section>` : ""}
-    <div class="gallery">${imgs.slice(1).map((src, k) => `<img src="${esc(src)}" alt="${esc(p.title)} 圖 ${k + 2}" loading="lazy">`).join("")}</div>
+    <div class="gallery">${imgs.slice(1).map((src, k) => `<img ${modAttrs(src)} alt="${esc(p.title)} 圖 ${k + 2}" loading="lazy">`).join("")}</div>
     <nav class="pager"><a href="#w-${prev.id}"><small>← Prev</small><strong>${esc(prev.title)}</strong></a><a href="#w-${next.id}"><small>Next →</small><strong>${esc(next.title)}</strong></a></nav>
   </article>`;
 }
@@ -771,7 +792,7 @@ function about(){
     <div class="stack exp-col">
       ${SITE.experience.map(g => `<section class="exp-group"><h2>${esc(g.group)}</h2><ul>${g.items.map(expItem).join("")}</ul></section>`).join("")}
     </div>
-    <div class="strip">${SITE.projects.slice(0, 5).map((p, i) => `<a href="#w-${p.id}"><img src="${p.cover || ph(p.title, "3/4", i)}" alt="${esc(p.title)}" loading="lazy"></a>`).join("")}</div>
+    <div class="strip">${SITE.projects.slice(0, 5).map((p, i) => `<a href="#w-${p.id}"><img ${coverAttrs(p, i, "(min-width: 821px) 20vw, 20vw")} alt="${esc(p.title)}" loading="lazy"></a>`).join("")}</div>
   </div>`;
 }
 
@@ -817,7 +838,7 @@ addEventListener("hashchange", render);
 document.addEventListener("pointerdown", e => { const pf = $("#protoFrame"); if (pf && !pf.contains(e.target)) pf.classList.remove("active"); });
 document.addEventListener("error", e => {
   const t = e.target;
-  if (t.tagName === "IMG" && !t.dataset.fb) { t.dataset.fb = "1"; t.src = ph(t.alt || "", "808/632", 0); }
+  if (t.tagName === "IMG" && !t.dataset.fb) { t.dataset.fb = "1"; t.removeAttribute("srcset"); t.removeAttribute("sizes"); t.src = ph(t.alt || "", "808/632", 0); }
 }, true);
 render();
 </script>
