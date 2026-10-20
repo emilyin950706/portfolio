@@ -57,10 +57,11 @@ main{min-width:0;animation:in .35s ease both}
 .page-h{font-size:var(--s-xl);font-weight:500;margin:0 0 6px;line-height:1.3;text-wrap:balance}
 .page-sub{color:var(--muted);font-size:var(--s-sm);margin:0 0 36px}
 
-.grid{columns:3 260px;column-gap:28px}
-.card{break-inside:avoid;margin:0 0 36px;display:block}
-.card .img{overflow:hidden;background:var(--soft)}
-.card img{width:100%;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .3s}
+/* 分類頁：跟 Behance 預覽圖一樣，每張封面同樣大小（808:632），排成整齊網格 */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:36px 28px}
+.card{display:block}
+.card .img{overflow:hidden;background:var(--soft);aspect-ratio:808/632}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .3s}
 .card:hover img{transform:scale(1.025);opacity:.92}
 .cap{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-top:10px;font-size:var(--s-sm)}
 .cap .t{min-width:0}
@@ -171,7 +172,7 @@ html.has-cursor .cursor.hide{opacity:0}
 .exp-group .v{color:var(--muted)}
 .tagline{margin:12px 0 0;font-size:var(--s-sm);line-height:1.7;color:var(--muted);text-wrap:pretty}
 .strip{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:16px}
-.strip img{width:100%;aspect-ratio:3/4;object-fit:cover;background:var(--soft)}
+.strip img{width:100%;aspect-ratio:808/632;object-fit:cover;background:var(--soft)}
 
 footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color:var(--muted);padding-top:48px}
 /* 電腦版：版權標記固定在左側欄最下方，每一頁位置都一樣 */
