@@ -110,6 +110,8 @@ html.has-cursor .cursor.hide{opacity:0}
 .meta{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:var(--s-sm);margin:0;align-content:start;border-top:1px solid var(--line);padding-top:12px}
 .meta dt{font-family:var(--font-mono);font-size:var(--s-xs);color:var(--muted);letter-spacing:.06em;padding-top:2px}
 .meta dd{margin:0}
+.meta .ext{color:var(--accent)}
+.meta .ext:hover{text-decoration:underline}
 .block{display:grid;grid-template-columns:140px minmax(0,1fr);gap:24px;margin:0 0 32px}
 .block h3{font-size:var(--s-sm);font-weight:500;margin:0;color:var(--muted)}
 .block p{margin:0;max-width:36em}
@@ -227,9 +229,8 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
 /* =========================================================
    ✏️ 修改說明（只需要改這一段 SITE 裡的文字就好）
    - 文字：直接改引號裡的字。
-   - 圖片：把圖片檔放在網站資料夾的 images/ 裡，然後填路徑，
-           例如 cover: "images/qingcao-cover.jpg"
-           留空 "" 的地方會自動顯示灰色佔位圖。
+   - 圖片：目前直接使用 Behance 上的圖片網址（cover 是封面，images 是內頁圖）。
+           也可以把圖片放進網站資料夾的 images/，填 "images/xxx.jpg"。
    - 新增作品：複製 projects 裡一整個 { ... }，改 id 和內容。
    - 分類：category 要對應下面 categories 的 id（brand / event / logotype / poster / book / photo / playground）。
    ========================================================= */
@@ -291,36 +292,237 @@ const SITE = {
   ],
   projects: [
     {
-      id: "qingcao",
-      title: "青草巷｜袋裝青草飲禮盒",
-      en: "Qingcao Alley Herbal Tea Packaging",
-      category: "brand", year: "2026",
-      cover: "", ratio: "4/5",
-      summary: "為龍山寺旁的青草巷設計的創意產品包裝。鎖定一群年輕人和他們的痛點，做成一盒裝有兩款袋裝、用泡的青草飲。",
-      meta: [["類型","產品包裝"],["角色","（個人／小組，負責項目）"],["工具","（Illustrator、Photoshop…）"]],
-      sections: [
-        { h: "背景", p: "（青草巷是什麼地方、這個題目的出發點。）" },
-        { h: "受眾與痛點", p: "（你選了哪一群年輕人？他們遇到什麼問題，讓他們不會去買青草茶？）" },
-        { h: "設計概念", p: "（兩款飲品分別是什麼？包裝的顏色、圖像、結構怎麼回應上面的痛點？）" },
-        { h: "成品", p: "（材質、尺寸、開盒方式等細節。）" }
+      "id": "are-you-full",
+      "title": "ARE YOU FULL?",
+      "en": "Poster Series",
+      "category": "poster",
+      "year": "2026",
+      "cover": "https://mir-s3-cdn-cf.behance.net/projects/808/6b0451252708263.Y3JvcCwzMjc4LDI1NjQsNjA4LDIxOQ.jpg",
+      "ratio": "808/632",
+      "summary": "以視覺同構把日常主食與數位符號結合的系列海報，探討當代社會的數位成癮：我們把資訊當成必需的養分，卻陷入越吃越空虛的「數位暴食」循環。",
+      "meta": [
+        [
+          "類型",
+          "系列海報"
+        ],
+        [
+          "工具",
+          "Illustrator、Photoshop"
+        ]
       ],
-      images: ["","","",""]
+      "behance": "https://www.behance.net/gallery/252708263/ARE-YOU-FULL",
+      "sections": [
+        {
+          "h": "核心提問",
+          "p": "「消耗的是滿足，還是無止盡的載入？」作品揭示一個現代矛盾：人們把數位資訊當成生理必需的養分，卻在不斷攝取中只換來更多空虛。"
+        },
+        {
+          "h": "視覺手法",
+          "p": "把麵條、米飯等主食與載入、通知等數位符號做視覺同構，異化的食物畫面直接回應這種永遠吃不飽的資訊焦慮。"
+        },
+        {
+          "h": "Concept",
+          "p": "The poster series Are You Full? utilizes visual isomorphism to merge daily food staples with digital symbols, exploring the phenomenon of digital addiction in contemporary society."
+        }
+      ],
+      "images": [
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/85d7b0252708263.6a5653f2e3950.jpg"
+      ]
     },
-    { id: "work-2", title: "作品二（範例）", en: "Project Two", category: "event", year: "2025", cover: "", ratio: "1/1",
-      summary: "（一句話介紹這件作品。）", meta: [["類型","活動識別"],["角色","（填寫）"]],
-      sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] },
-    { id: "work-3", title: "作品三（範例）", en: "Project Three", category: "logotype", year: "2025", cover: "", ratio: "3/4",
-      summary: "（一句話介紹這件作品。）", meta: [["類型","標準字設計"]],
-      sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] },
-    { id: "work-4", title: "作品四（範例）", en: "Project Four", category: "poster", year: "2024", cover: "", ratio: "4/3",
-      summary: "（一句話介紹這件作品。）", meta: [["類型","海報"]],
-      sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] },
-    { id: "work-5", title: "作品五（範例）", en: "Project Five", category: "book", year: "2024", cover: "", ratio: "3/4",
-      summary: "（一句話介紹這件作品。）", meta: [["類型","書籍編排"]],
-      sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] },
-    { id: "work-6", title: "作品六（範例）", en: "Project Six", category: "photo", year: "2024", cover: "", ratio: "1/1",
-      summary: "（一句話介紹這件作品。）", meta: [["類型","攝影"]],
-      sections: [{ h: "概念", p: "（作品說明。）" }], images: ["",""] }
+    {
+      "id": "hakka-tea",
+      "title": "台灣客家茶文化館",
+      "en": "Taiwan Hakka Tea Culture Museum",
+      "category": "brand",
+      "year": "2026",
+      "cover": "https://mir-s3-cdn-cf.behance.net/projects/808/7502ba251048871.Y3JvcCw0MDkxLDMyMDAsODcwLDA.jpg",
+      "ratio": "808/632",
+      "summary": "讓茶香，築起親子共創的記憶。為台灣客家茶文化館重新規劃品牌形象，以「親子共學」為核心，把傳統茶文化轉化為輕鬆的親子共學時光。",
+      "meta": [
+        [
+          "類型",
+          "品牌識別、包裝、插畫"
+        ],
+        [
+          "合作",
+          "吳佳俞"
+        ]
+      ],
+      "behance": "https://www.behance.net/gallery/251048871/-Taiwan-Hakka-Tea-Culture-Museum",
+      "sections": [
+        {
+          "h": "品牌問題",
+          "p": "文化館以文化保存與傳承為核心使命，但現有品牌形象偏向傳統文化展示，較少從親子互動的角度溝通；館內雖有豐富的體驗活動，卻缺乏一套能吸引家庭參與的整體品牌語言。"
+        },
+        {
+          "h": "解決方向",
+          "p": "視覺親和化、文化轉譯、親子共學、情感連結。品牌關鍵字為「客家茶 × 親子互動 × 文化體驗」。"
+        },
+        {
+          "h": "品牌理念",
+          "p": "以「親子共學」重新詮釋客家茶文化的傳承方式，透過互動體驗增進親子感情、降低文化距離，讓家長與孩子在探索中創造專屬回憶，使茶文化從歷史與展示走入日常陪伴。"
+        },
+        {
+          "h": "Logo",
+          "p": "以茶園地形結合茶葉與親子意象，象徵文化傳承與陪伴成長；輔助圖形則延伸自炒青綠茶、東方美人茶、擂茶、酸柑茶、麥茶與烏龍茶。"
+        }
+      ],
+      "images": [
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/192c39251048871.6a2d4af57421e.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/264555251048871.6a2ece4956602.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/c2ade0251048871.6a2da12468c94.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/f8063a251048871.6a2da124688ad.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/11a9cb251048871.6a2da12467873.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/646441251048871.6a2da64e81c51.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/518d78251048871.6a2e61cee9b4a.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/0925f8251048871.6a2da12467ffb.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/632535251048871.6a2da124684ca.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/ba7b49251048871.6a2e5db9d1f75.jpg"
+      ]
+    },
+    {
+      "id": "perchtime",
+      "title": "棲時 Perchtime.",
+      "en": "Dessert Brand Identity",
+      "category": "brand",
+      "year": "2026",
+      "cover": "https://mir-s3-cdn-cf.behance.net/projects/808/f638f5250668485.Y3JvcCwzMzY4LDI2MzQsMCww.jpg",
+      "ratio": "808/632",
+      "summary": "在不斷向前的生活裡，人們總習慣追趕下一個目標。棲時希望用一份甜點，為匆忙的日常留下一處溫柔的停靠站。",
+      "meta": [
+        [
+          "類型",
+          "品牌識別、海報、插畫"
+        ]
+      ],
+      "behance": "https://www.behance.net/gallery/250668485/-Perchtime",
+      "sections": [
+        {
+          "h": "市場觀察",
+          "p": "超商甜點多以 CP 值、平價和飽足感為導向，市面上少有從情緒出發的甜點。"
+        },
+        {
+          "h": "品牌切入",
+          "p": "棲時以「心理療癒」為切入點，用一份達克瓦茲，讓忙碌的人有一個停下來喘口氣的理由。"
+        },
+        {
+          "h": "視覺延伸",
+          "p": "以 SHIMMER、PAUSE、ECHO 三張系列海報，描繪日常中不同時刻的停頓，延伸出完整的品牌視覺。"
+        }
+      ],
+      "images": [
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/e5e45c250668485.6a24793247edf.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/89b724250668485.6a24793247794.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/b6afff250668485.6a24793245ec3.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/7678df250668485.6a24793246d0c.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/8bf539250668485.6a24793245b5a.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/2ac742250668485.6a2479324901b.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/251118250668485.6a2479324740b.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/bfab87250668485.6a2479324825a.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/87fe8a250668485.6a24793248ca0.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/512156250668485.6a247932485e6.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/321e27250668485.6a24793247b1f.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/049787250668485.6a24793246250.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/0c2e56250668485.6a2479324895b.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/30f31a250668485.6a24793247083.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/176108250668485.6a24793246989.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/506643250668485.6a247932457b3.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/45bd65250668485.6a24793246595.jpg"
+      ]
+    },
+    {
+      "id": "sanxia-indigo",
+      "title": "藍染拾光｜三峽藍染節",
+      "en": "Sanxia Indigo Dyeing Festival",
+      "category": "event",
+      "year": "2025",
+      "cover": "https://mir-s3-cdn-cf.behance.net/projects/808/0e6f4f240880135.Y3JvcCw5ODEsNzY4LDIwOSww.jpg",
+      "ratio": "808/632",
+      "summary": "以「拾起時光」為核心概念，為三峽藍染節設計活動識別，拾起被遺忘的藍染故事，讓三峽藍不只是技藝，更是一段被傳遞與傳承的故事。",
+      "meta": [
+        [
+          "類型",
+          "活動識別"
+        ]
+      ],
+      "behance": "https://www.behance.net/gallery/240880135/-Sanxia-Indigo-Dyeing-Festival-",
+      "sections": [
+        {
+          "h": "背景",
+          "p": "三峽是藍染工藝的重鎮，長期孕育深厚的藍染文化。三峽藍染節以節慶形式推廣傳統藍染工藝，透過展演與體驗活動，讓大眾認識藍染的文化價值，並促進保存與傳承。"
+        },
+        {
+          "h": "概念",
+          "p": "藍染拾光（Indigo Moments）：以「拾起時光」為核心，拾起被遺忘的藍染故事。"
+        },
+        {
+          "h": "設計主軸",
+          "p": "藍染 × 故事 × 連結。以三峽藍染為核心，透過故事建立人與人、地與人的連結，強化文化傳承與品牌價值。"
+        }
+      ],
+      "images": [
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/cef608240880135.694a65d898e21.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/e20d46240880135.69494d2d1eab5.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/078976240880135.69494d2d1fdfd.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/919177240880135.694957b0921b2.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/c15ab5240880135.694a5fd6b719f.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/950738240880135.69494d2d1f37c.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/086843240880135.694a5d5972b3d.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/1c9cf3240880135.694a40328e7ca.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/8183ce240880135.69494fbb79872.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/1620a7240880135.69494fbd0162a.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/8e2921240880135.69494fbd020fd.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/d969e5240880135.69494fbd008be.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/0c6f18240880135.69494fbd00e67.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/e5e190240880135.69494fbd01b2e.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/40e8a0240880135.69494fbd028da.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/2c0be3240880135.69494fbd03676.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/b25804240880135.69494fbd03e5d.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/5ecee3240880135.69494fbd030d5.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/dae278240880135.69494fbf364f7.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/2ef061240880135.69494fbf37150.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/1a9276240880135.69494fbf36ba2.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/79870c240880135.694a5ed2232c1.jpg"
+      ]
+    },
+    {
+      "id": "brick-map",
+      "title": "木磚指引地圖",
+      "en": "Directional Map Design",
+      "category": "playground",
+      "year": "2025",
+      "cover": "https://mir-s3-cdn-cf.behance.net/projects/808/17e229224148803.6806574c9fa91.jpg",
+      "ratio": "808/632",
+      "summary": "以輕巧、方便、數位化與趣味性為核心，重新設計校園木磚的指引地圖，結合紙本與 APP，讓尋找木磚的過程變成一場解謎。",
+      "meta": [
+        [
+          "類型",
+          "指引地圖、介面設計"
+        ]
+      ],
+      "behance": "https://www.behance.net/gallery/224148803/Directional-Map-Design",
+      "sections": [
+        {
+          "h": "視覺",
+          "p": "選用工業風的橙與黑作為主色。"
+        },
+        {
+          "h": "紙本 × 數位",
+          "p": "設計上兼顧紙本與數位應用，符合現代人手持行動裝置的習慣；除了紙本地圖，也能透過 APP 的指引到達目的地。"
+        },
+        {
+          "h": "解謎",
+          "p": "地圖不只是路線指引，更融入四個小謎題，讓使用者在尋找木磚的過程中保持新鮮感，成為一個兼具趣味與參與感的設計。"
+        }
+      ],
+      "images": [
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/6c8921224148803.680656210b6e4.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/43e615224148803.680656210bc1e.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/7eb5a4224148803.680656210c0f2.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/6d6400224148803.680656210cde0.jpg",
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/693695224148803.680656210c8fe.jpg"
+      ]
+    }
   ]
 };
 /* ===================== 以下不用改 ===================== */
@@ -523,13 +725,14 @@ function category(c){
 }
 function work(p){
   const i = idx(p.id), n = SITE.projects.length, prev = SITE.projects[(i - 1 + n) % n], next = SITE.projects[(i + 1) % n], c = catOf(p.category);
+  const imgs = (p.images || []).filter(Boolean);
   return `<article class="work">
     <p class="crumb"><a href="#home">./</a><a href="#${c.id}">${esc(c.id)}</a>/${esc(p.id)}</p>
     <div class="work-head"><div><h1 class="page-h">${esc(p.title)}</h1><p class="en">${esc(p.en)} — ${esc(p.year)}</p><p class="summary">${esc(p.summary)}</p></div>
-      <dl class="meta">${[["年份", p.year], ...(p.meta || [])].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl></div>
-    <div class="gallery"><img src="${p.cover || ph(p.title, p.ratio, i)}" alt="${esc(p.title)}"></div>
+      <dl class="meta">${[["年份", p.year], ...(p.meta || [])].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}${p.behance ? `<dt>Behance</dt><dd><a class="ext" href="${esc(p.behance)}" target="_blank" rel="noopener">查看完整專案 ↗</a></dd>` : ""}</dl></div>
+    ${imgs.length ? `<div class="gallery"><img src="${esc(imgs[0])}" alt="${esc(p.title)}"></div>` : `<div class="gallery"><img src="${ph(p.title, p.ratio, i)}" alt="${esc(p.title)}"></div>`}
     ${(p.sections || []).map(s => `<div class="block"><h3>${esc(s.h)}</h3><p>${esc(s.p)}</p></div>`).join("")}
-    <div class="gallery">${(p.images || []).map((src, k) => `<img src="${src || ph("作品圖 " + (k + 1), "16/10", i + k + 1)}" alt="${esc(p.title)} 圖 ${k + 1}" loading="lazy">`).join("")}</div>
+    <div class="gallery">${imgs.slice(1).map((src, k) => `<img src="${esc(src)}" alt="${esc(p.title)} 圖 ${k + 2}" loading="lazy">`).join("")}</div>
     <nav class="pager"><a href="#w-${prev.id}"><small>← Prev</small><strong>${esc(prev.title)}</strong></a><a href="#w-${next.id}"><small>Next →</small><strong>${esc(next.title)}</strong></a></nav>
   </article>`;
 }
@@ -590,6 +793,10 @@ function setMenu(o){
 $("#menuBtn").onclick = () => setMenu(!$("#side").classList.contains("open"));
 addEventListener("keydown", e => { if (e.key === "Escape" && $("#side").classList.contains("open")) setMenu(false); });
 addEventListener("hashchange", render);
+document.addEventListener("error", e => {
+  const t = e.target;
+  if (t.tagName === "IMG" && !t.dataset.fb) { t.dataset.fb = "1"; t.src = ph(t.alt || "", "808/632", 0); }
+}, true);
 render();
 </script>
 </body>
