@@ -8,6 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<!-- 瀏覽統計：GoatCounter（後台 https://yizhen.goatcounter.com） -->
+<script>window.goatcounter = { no_onload: true };</script>
+<script data-goatcounter="https://yizhen.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <style>
 /* Layout: 左側固定側欄（頭像、名字、分類目錄）＋ 右側作品；手機版側欄收成頂部選單。固定白底單一主題 */
 :root{
@@ -797,14 +800,29 @@ function about(){
   </div>`;
 }
 
+
+/* 每換一頁（作品、分類、About）就記錄一次瀏覽 */
+let gcLast = "";
+function track(title){
+  const path = location.pathname + (location.hash || "#home");
+  if (path === gcLast) return;
+  const send = () => {
+    if (!(window.goatcounter && window.goatcounter.count)) return false;
+    gcLast = path; window.goatcounter.count({ path, title });
+    return true;
+  };
+  if (!send()) { let n = 0; const t = setInterval(() => { if (send() || ++n > 40) clearInterval(t); }, 250); }
+}
 function render(){
   const route = (location.hash || "#home").slice(1) || "home";
   let html, active = route;
-  if (route === "about") html = about();
-  else if (route.startsWith("w-") && idx(route.slice(2)) > -1) { const p = SITE.projects[idx(route.slice(2))]; html = work(p); active = p.category; }
-  else if (SITE.categories.some(c => c.id === route)) html = category(catOf(route));
+  let label = "Home";
+  if (route === "about") { html = about(); label = "About Zhen"; }
+  else if (route.startsWith("w-") && idx(route.slice(2)) > -1) { const p = SITE.projects[idx(route.slice(2))]; html = work(p); active = p.category; label = p.title; }
+  else if (SITE.categories.some(c => c.id === route)) { html = category(catOf(route)); label = catOf(route).label; }
   else { html = home(); active = "home"; }
   sidebar(active);
+  track(label);
   const m = $("#main"); m.style.animation = "none"; m.offsetHeight; m.style.animation = "";
   m.innerHTML = html;
   setMenu(false);
