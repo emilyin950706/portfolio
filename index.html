@@ -121,7 +121,11 @@ html.has-cursor .cursor.hide{opacity:0}
 /* Figma 互動原型 */
 .proto{margin:48px 0 0;padding-top:28px;border-top:1px solid var(--line)}
 .proto h3{font-size:var(--s-xs);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
-.proto-frame{height:min(82vh,780px);background:var(--soft);border:1px solid var(--line)}
+.proto-frame{position:relative;height:min(82vh,780px);background:var(--soft);border:1px solid var(--line)}
+/* 透明遮罩：沒點之前，滾輪和游標都留在網頁上；點一下才進入原型操作 */
+.proto-cover{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:0 0 22px;background:transparent;border:0;cursor:pointer;font:inherit}
+.proto-cover span{padding:8px 16px;border-radius:999px;background:rgba(28,30,27,.82);color:#fff;font-size:var(--s-xs);letter-spacing:.04em;transition:opacity .25s}
+.proto-frame.active .proto-cover{display:none}
 .proto-frame iframe{display:block;width:100%;height:100%;border:0}
 .proto p{margin:10px 0 0;font-size:var(--s-sm);color:var(--muted)}
 .proto .ext{color:var(--accent)}
@@ -610,6 +614,7 @@ const Cursor = (() => {
     link = !!(e.target.closest && e.target.closest("a, button"));
   });
   document.addEventListener("mouseout", e => { if (!e.relatedTarget) el.classList.add("hide"); });
+  document.addEventListener("pointerover", e => { if (e.target.tagName === "IFRAME") el.classList.add("hide"); });
   addEventListener("pointerdown", e => { if (e.pointerType === "mouse") down = true; });
   addEventListener("pointerup", () => { down = false; });
   const loop = now => {
@@ -741,7 +746,7 @@ function work(p){
       <dl class="meta">${[["年份", p.year], ...(p.meta || [])].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}${p.prototype ? `<dt>Prototype</dt><dd><a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">開啟互動原型 ↗</a></dd>` : ""}${p.behance ? `<dt>Behance</dt><dd><a class="ext" href="${esc(p.behance)}" target="_blank" rel="noopener">查看完整專案 ↗</a></dd>` : ""}</dl></div>
     ${imgs.length ? `<div class="gallery"><img src="${esc(imgs[0])}" alt="${esc(p.title)}"></div>` : `<div class="gallery"><img src="${ph(p.title, p.ratio, i)}" alt="${esc(p.title)}"></div>`}
     ${(p.sections || []).length ? `<div class="blocks">${p.sections.map(s => `<div class="block"><h3>${esc(s.h)}</h3><p>${esc(s.p)}</p></div>`).join("")}</div>` : ""}
-    ${p.prototype ? `<section class="proto"><h3>Interactive Prototype</h3><div class="proto-frame"><iframe src="https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(p.prototype)}" title="${esc(p.title)} 互動原型" loading="lazy" allowfullscreen></iframe></div><p>可以直接在上面點選操作；畫面太小時，<a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">在 Figma 開啟完整原型 ↗</a></p></section>` : ""}
+    ${p.prototype ? `<section class="proto"><h3>Interactive Prototype</h3><div class="proto-frame" id="protoFrame"><iframe src="https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(p.prototype)}" title="${esc(p.title)} 互動原型" loading="lazy" allowfullscreen></iframe><button class="proto-cover" id="protoCover" type="button"><span>點一下開始操作原型</span></button></div><p>滑鼠移出原型範圍就會恢復捲動頁面；畫面太小時，<a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">在 Figma 開啟完整原型 ↗</a></p></section>` : ""}
     <div class="gallery">${imgs.slice(1).map((src, k) => `<img src="${esc(src)}" alt="${esc(p.title)} 圖 ${k + 2}" loading="lazy">`).join("")}</div>
     <nav class="pager"><a href="#w-${prev.id}"><small>← Prev</small><strong>${esc(prev.title)}</strong></a><a href="#w-${next.id}"><small>Next →</small><strong>${esc(next.title)}</strong></a></nav>
   </article>`;
@@ -784,6 +789,11 @@ function render(){
   window.scrollTo(0, 0);
   if ($("#ticker")) startTicker(); else stopTicker();
   Cursor.refresh();
+  const pf = $("#protoFrame");
+  if (pf) {
+    $("#protoCover").onclick = () => pf.classList.add("active");
+    pf.addEventListener("mouseleave", () => pf.classList.remove("active"));
+  }
   document.querySelectorAll("[data-copy]").forEach(btn => btn.onclick = () => {
     const el = $("#" + btn.dataset.copy), text = el.textContent;
     const done = t => { btn.textContent = t; setTimeout(() => btn.textContent = "複製", 1600); };
@@ -803,6 +813,8 @@ function setMenu(o){
 $("#menuBtn").onclick = () => setMenu(!$("#side").classList.contains("open"));
 addEventListener("keydown", e => { if (e.key === "Escape" && $("#side").classList.contains("open")) setMenu(false); });
 addEventListener("hashchange", render);
+// 手機：點原型以外的地方，就把遮罩蓋回去，恢復捲動頁面
+document.addEventListener("pointerdown", e => { const pf = $("#protoFrame"); if (pf && !pf.contains(e.target)) pf.classList.remove("active"); });
 document.addEventListener("error", e => {
   const t = e.target;
   if (t.tagName === "IMG" && !t.dataset.fb) { t.dataset.fb = "1"; t.src = ph(t.alt || "", "808/632", 0); }
