@@ -129,9 +129,13 @@ html.has-cursor .cursor.hide{opacity:0}
 /* Figma 互動原型 */
 .proto{margin:48px 0 0;padding-top:28px;border-top:1px solid var(--line)}
 .proto h3{font-size:var(--s-xs);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
-.proto-frame{position:relative;height:min(82vh,780px);background:var(--soft);border:1px solid var(--line)}
+/* 原型放在自己畫的手機外框裡：電腦、手機看起來一樣 */
+.proto-stage{display:flex;justify-content:center;padding:40px 16px;background:var(--soft)}
+.proto-frame{position:relative;width:min(340px,78vw);aspect-ratio:390/844;padding:11px;border-radius:52px;background:#141414;box-shadow:0 0 0 2px #2a2a2a,0 30px 60px -24px rgba(0,0,0,.45)}
+.proto-frame::before{content:"";position:absolute;z-index:2;top:20px;left:50%;width:34%;height:24px;transform:translateX(-50%);border-radius:14px;background:#141414;pointer-events:none}
+.proto-frame iframe{display:block;width:100%;height:100%;border:0;border-radius:42px;background:#fff}
 /* 透明遮罩：沒點之前，滾輪和游標都留在網頁上；點一下才進入原型操作 */
-.proto-cover{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:0 0 22px;background:transparent;border:0;cursor:pointer;font:inherit}
+.proto-cover{position:absolute;z-index:3;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:0 0 28px;background:transparent;border:0;border-radius:52px;cursor:pointer;font:inherit}
 .proto-cover span{padding:8px 16px;border-radius:999px;background:rgba(28,30,27,.82);color:#fff;font-size:var(--s-xs);letter-spacing:.04em;transition:opacity .25s}
 .proto-frame.active .proto-cover{display:none}
 .proto-frame iframe{display:block;width:100%;height:100%;border:0}
@@ -551,7 +555,9 @@ const SITE = {
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/6d6400224148803.680656210cde0.jpg",
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/693695224148803.680656210c8fe.jpg"
       ]
-    }
+    },
+    {"id": "sanxia-logotype", "title": "藍染拾光｜標準字", "en": "Indigo Moments — Logotype", "category": "logotype", "year": "2025", "sub": true, "parent": "sanxia-indigo", "cover": "https://mir-s3-cdn-cf.behance.net/project_modules/1400/086843240880135.694a5d5972b3d.jpg", "coverHi": "https://mir-s3-cdn-cf.behance.net/project_modules/max_3840_webp/086843240880135.694a5d5972b3d.jpg", "coverHiW": 3840, "ratio": "808/632", "summary": "以纖細字體營造沉穩且具有歷史感的視覺風格，並從織品交織的結構中取材，同時運用細線表現光影流動，將「時光」的抽象概念具體呈現。", "meta": [["類型", "標準字設計"]], "sections": [{"h": "字體", "p": "以襯線字體為基礎，營造沉穩、帶有歷史感的視覺調性。"}, {"h": "結構", "p": "筆畫結構取材自織品經緯交織的樣貌，呼應藍染的布料本質。"}, {"h": "光影", "p": "以細線表現光影的流動，把「時光」這個抽象概念轉化成看得見的形狀。"}], "images": ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/086843240880135.694a5d5972b3d.jpg", "https://mir-s3-cdn-cf.behance.net/project_modules/1400/cef608240880135.694a65d898e21.jpg"]},
+    {"id": "hakka-logotype", "title": "台灣客家茶文化館｜Logo 與標準字", "en": "Taiwan Hakka Tea Culture Museum — Logo & Logotype", "category": "logotype", "year": "2026", "sub": true, "parent": "hakka-tea", "cover": "https://mir-s3-cdn-cf.behance.net/project_modules/1400/c2ade0251048871.6a2da12468c94.jpg", "coverHi": "https://mir-s3-cdn-cf.behance.net/project_modules/max_3840_webp/c2ade0251048871.6a2da12468c94.jpg", "coverHiW": 3840, "ratio": "808/632", "summary": "以茶園地形結合茶葉與親子意象，象徵文化傳承與陪伴成長；搭配圓潤的中英文標準字，延伸出直式、橫式等多種組合規範。", "meta": [["類型", "標準字設計"]], "sections": [{"h": "Logo", "p": "茶園的起伏地形結合茶葉與親子意象，象徵文化傳承與陪伴成長，透過茶文化體驗築起親子間共同的珍貴記憶。"}, {"h": "組合規範", "p": "規劃直式與橫式、中英文搭配等多種組合，方便應用在不同尺寸與媒材上。"}], "images": ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/c2ade0251048871.6a2da12468c94.jpg", "https://mir-s3-cdn-cf.behance.net/project_modules/1400/f8063a251048871.6a2da124688ad.jpg"]}
   ]
 };
 /* ===================== 以下不用改 ===================== */
@@ -594,6 +600,7 @@ const modAttrs = url => {
   const b = "https://mir-s3-cdn-cf.behance.net/project_modules/";
   return `src="${b}1400_webp/${m[1]}" srcset="${b}1400_webp/${m[1]} 1400w, ${b}max_3840_webp/${m[1]} 3840w" sizes="(min-width: 821px) calc(100vw - 360px), 100vw"`;
 };
+const MAINS = () => SITE.projects.filter(p => !p.sub);   // 首頁和 About 只放主要作品；sub 是從大專案拆出來的小作品
 const catOf = id => SITE.categories.find(c => c.id === id) || { label: id, zh: "" };
 const idx = id => SITE.projects.findIndex(p => p.id === id);
 
@@ -626,7 +633,7 @@ function home(){
       <div class="img" style="aspect-ratio:${esc(p.ratio || "4/5")}"><img ${coverAttrs(p, i, "(max-width: 820px) 70vw, 800px")} alt="${dup ? "" : esc(p.title)}" draggable="false"></div>
       <div class="cap"><div class="t"><span>./</span>${esc(p.title)}</div><div class="y">${esc(p.year)}</div></div></a>`;
   };
-  const list = SITE.projects;
+  const list = MAINS();
   return `<p class="crumb">./works</p><h1 class="page-h">Selected Works</h1><p class="page-sub">${SITE.disciplines.map(esc).join(" / ")}</p>
     <div class="ticker" id="ticker"><div class="track">${list.map(p => item(p, false)).join("")}${list.map(p => item(p, true)).join("")}</div></div>`;
 }
@@ -767,15 +774,17 @@ function category(c){
   return `<p class="crumb"><a href="#home">./</a>${esc(c.id)}</p><h1 class="page-h">${esc(c.label)}</h1><p class="page-sub">${esc(c.zh)}</p>${grid(SITE.projects.filter(p => p.category === c.id))}`;
 }
 function work(p){
-  const i = idx(p.id), n = SITE.projects.length, prev = SITE.projects[(i - 1 + n) % n], next = SITE.projects[(i + 1) % n], c = catOf(p.category);
+  const i = idx(p.id), c = catOf(p.category);
+  const seq = p.sub ? SITE.projects.filter(x => x.category === p.category) : MAINS(), j = seq.indexOf(p), n = seq.length, prev = seq[(j - 1 + n) % n], next = seq[(j + 1) % n];
+  const par = p.parent ? SITE.projects.find(x => x.id === p.parent) : null;
   const imgs = (p.images || []).filter(Boolean);
   return `<article class="work">
     <p class="crumb"><a href="#home">./</a><a href="#${c.id}">${esc(c.id)}</a>/${esc(p.id)}</p>
     <div class="work-head"><div><h1 class="page-h">${esc(p.title)}</h1><p class="en">${esc(p.en)} — ${esc(p.year)}</p><p class="summary">${esc(p.summary)}</p></div>
-      <dl class="meta">${[["年份", p.year], ...(p.meta || [])].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}${p.prototype ? `<dt>Prototype</dt><dd><a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">開啟互動原型 ↗</a></dd>` : ""}${p.behance ? `<dt>Behance</dt><dd><a class="ext" href="${esc(p.behance)}" target="_blank" rel="noopener">查看完整專案 ↗</a></dd>` : ""}</dl></div>
+      <dl class="meta">${[["年份", p.year], ...(p.meta || [])].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}${par ? `<dt>完整專案</dt><dd><a class="ext" href="#w-${par.id}">${esc(par.title)} →</a></dd>` : ""}${p.prototype ? `<dt>Prototype</dt><dd><a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">開啟互動原型 ↗</a></dd>` : ""}${p.behance ? `<dt>Behance</dt><dd><a class="ext" href="${esc(p.behance)}" target="_blank" rel="noopener">查看完整專案 ↗</a></dd>` : ""}</dl></div>
     ${imgs.length ? `<div class="gallery"><img ${modAttrs(imgs[0])} alt="${esc(p.title)}"></div>` : `<div class="gallery"><img src="${ph(p.title, p.ratio, i)}" alt="${esc(p.title)}"></div>`}
     ${(p.sections || []).length ? `<div class="blocks">${p.sections.map(s => `<div class="block"><h3>${esc(s.h)}</h3><p>${esc(s.p)}</p></div>`).join("")}</div>` : ""}
-    ${p.prototype ? `<section class="proto"><h3>Interactive Prototype</h3><div class="proto-frame" id="protoFrame"><iframe src="https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(p.prototype)}" title="${esc(p.title)} 互動原型" loading="lazy" allowfullscreen></iframe><button class="proto-cover" id="protoCover" type="button"><span>點一下開始操作原型</span></button></div><p>滑鼠移出原型範圍就會恢復捲動頁面；畫面太小時，<a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">在 Figma 開啟完整原型 ↗</a></p></section>` : ""}
+    ${p.prototype ? `<section class="proto"><h3>Interactive Prototype</h3><div class="proto-stage"><div class="proto-frame" id="protoFrame"><iframe src="https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(p.prototype + "&hide-ui=1&scaling=contain&content-scaling=fixed")}" title="${esc(p.title)} 互動原型" loading="lazy" allowfullscreen></iframe><button class="proto-cover" id="protoCover" type="button"><span>點一下開始操作</span></button></div></div><p>點一下手機畫面就能操作原型，離開原型範圍後即可繼續捲動頁面；也可以<a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">在 Figma 開啟完整原型 ↗</a>。</p></section>` : ""}
     <div class="gallery">${imgs.slice(1).map((src, k) => `<img ${modAttrs(src)} alt="${esc(p.title)} 圖 ${k + 2}" loading="lazy">`).join("")}</div>
     <nav class="pager"><a href="#w-${prev.id}"><small>← Prev</small><strong>${esc(prev.title)}</strong></a><a href="#w-${next.id}"><small>Next →</small><strong>${esc(next.title)}</strong></a></nav>
   </article>`;
@@ -800,7 +809,7 @@ function about(){
     <div class="stack exp-col">
       ${SITE.experience.map(g => `<section class="exp-group"><h2>${esc(g.group)}</h2><ul>${g.items.map(expItem).join("")}</ul></section>`).join("")}
     </div>
-    <div class="strip">${SITE.projects.slice(0, 5).map((p, i) => `<a href="#w-${p.id}"><img ${coverAttrs(p, i, "(min-width: 821px) 20vw, 20vw")} alt="${esc(p.title)}" loading="lazy"></a>`).join("")}</div>
+    <div class="strip">${MAINS().slice(0, 5).map((p, i) => `<a href="#w-${p.id}"><img ${coverAttrs(p, i, "(min-width: 821px) 20vw, 20vw")} alt="${esc(p.title)}" loading="lazy"></a>`).join("")}</div>
   </div>`;
 }
 
