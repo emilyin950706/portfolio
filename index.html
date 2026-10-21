@@ -141,6 +141,10 @@ html.has-cursor .cursor.hide{opacity:0}
 .proto p{margin:10px 0 0;font-size:var(--s-sm);color:var(--muted)}
 .proto .ext{color:var(--accent)}
 .gallery img{width:100%;background:var(--soft)}
+.g-row{display:flex;gap:4px;margin-top:4px}
+.g-row + img{margin-top:4px}
+.g-cell{min-width:0}
+.g-cell img{display:block;height:auto;object-fit:cover}
 .pager{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:16px;font-size:var(--s-sm)}
 .pager a{display:flex;flex-direction:column;min-width:0}
 .pager a:last-child{text-align:right}
@@ -255,7 +259,7 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
    - 圖片：目前直接使用 Behance 上的圖片網址（cover 是封面，images 是內頁圖）。
            也可以把圖片放進網站資料夾的 images/，填 "images/xxx.jpg"。
    - 新增作品：複製 projects 裡一整個 { ... }，改 id 和內容。
-   - 分類：category 要對應下面 categories 的 id（brand / event / logotype / poster / book / photo / playground）。
+   - 分類：category 要對應下面 categories 的 id（brand / event / packaging / logotype / poster / book / photo / playground）。
    ========================================================= */
 const SITE = {
   name: "李宜臻 / Yi-Zhen Lee",
@@ -307,6 +311,7 @@ const SITE = {
   categories: [
     { id: "brand",      label: "Brand Identity", zh: "品牌識別" },
     { id: "event",      label: "Event Identity", zh: "活動識別" },
+    { id: "packaging",  label: "Packaging",      zh: "包裝設計" },
     { id: "logotype",   label: "Logotype",       zh: "標準字設計" },
     { id: "poster",     label: "Poster",         zh: "海報" },
     { id: "book",       label: "Book Design",    zh: "書籍編排" },
@@ -499,20 +504,11 @@ const SITE = {
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/c15ab5240880135.694a5fd6b719f.jpg",
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/950738240880135.69494d2d1f37c.jpg",
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/086843240880135.694a5d5972b3d.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/1c9cf3240880135.694a40328e7ca.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/8183ce240880135.69494fbb79872.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/1620a7240880135.69494fbd0162a.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/8e2921240880135.69494fbd020fd.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/d969e5240880135.69494fbd008be.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/0c6f18240880135.69494fbd00e67.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/e5e190240880135.69494fbd01b2e.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/40e8a0240880135.69494fbd028da.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/2c0be3240880135.69494fbd03676.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/b25804240880135.69494fbd03e5d.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/5ecee3240880135.69494fbd030d5.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/dae278240880135.69494fbf364f7.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/2ef061240880135.69494fbf37150.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/1a9276240880135.69494fbf36ba2.jpg",
+        [["https://mir-s3-cdn-cf.behance.net/project_modules/1400/1c9cf3240880135.694a40328e7ca.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/8183ce240880135.69494fbb79872.jpg", 1.5015]],
+        [["https://mir-s3-cdn-cf.behance.net/project_modules/1400/1620a7240880135.69494fbd0162a.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/8e2921240880135.69494fbd020fd.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/d969e5240880135.69494fbd008be.jpg", 1]],
+        [["https://mir-s3-cdn-cf.behance.net/project_modules/1400/0c6f18240880135.69494fbd00e67.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/e5e190240880135.69494fbd01b2e.jpg", 1.3403], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/40e8a0240880135.69494fbd028da.jpg", 1.4927]],
+        [["https://mir-s3-cdn-cf.behance.net/project_modules/1400/2c0be3240880135.69494fbd03676.jpg", 1.6101], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/b25804240880135.69494fbd03e5d.jpg", 0.6667], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/5ecee3240880135.69494fbd030d5.jpg", 1.5015]],
+        [["https://mir-s3-cdn-cf.behance.net/project_modules/1400/dae278240880135.69494fbf364f7.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/2ef061240880135.69494fbf37150.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/1a9276240880135.69494fbf36ba2.jpg", 1.5015]],
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/79870c240880135.694a5ed2232c1.jpg"
       ]
     },
@@ -555,6 +551,7 @@ const SITE = {
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/693695224148803.680656210c8fe.jpg"
       ]
     },
+    {"id": "pure-grove", "title": "森醇｜乳飲品包裝設計", "en": "Pure Grove — Milk Drink Packaging", "category": "packaging", "year": "2025", "cover": "assets/pure-grove-cover.jpg", "ratio": "808/632", "summary": "為乳飲品品牌「森醇 Pure Grove」設計的屋頂型紙盒包裝系列，以蘋果、酪梨、藍莓三種口味各自發展深色主色與果實紋樣，搭配古典花窗造型的標誌框，呈現沉穩、細緻的質感。", "meta": [["類型", "包裝設計、標準字"]], "sections": [{"h": "系列", "p": "三種口味以酒紅、墨綠、深藍區分，統一的版面與標誌框讓三盒並排時成為完整的系列。"}, {"h": "紋樣", "p": "以果實插畫結合巴洛克式卷草紋，鋪滿整個盒面，形成低調但有層次的圖案。"}, {"h": "標誌", "p": "「森醇」標準字與英文 Pure Grove 置於花窗造型的標誌框中，成為包裝的視覺中心。"}], "images": ["assets/pure-grove.jpg"]},
     {"id": "sanxia-logotype", "title": "藍染拾光｜標準字", "en": "Indigo Moments — Logotype", "category": "logotype", "year": "2025", "sub": true, "parent": "sanxia-indigo", "cover": "https://mir-s3-cdn-cf.behance.net/projects/808/0e6f4f240880135.Y3JvcCw5ODEsNzY4LDIwOSww.jpg", "coverHi": "assets/sanxia-cover.jpg", "coverHiW": 1962, "ratio": "808/632", "summary": "以纖細字體營造沉穩且具有歷史感的視覺風格，並從織品交織的結構中取材，同時運用細線表現光影流動，將「時光」的抽象概念具體呈現。", "meta": [["類型", "標準字設計"]], "sections": [{"h": "字體", "p": "以襯線字體為基礎，營造沉穩、帶有歷史感的視覺調性。"}, {"h": "結構", "p": "筆畫結構取材自織品經緯交織的樣貌，呼應藍染的布料本質。"}, {"h": "光影", "p": "以細線表現光影的流動，把「時光」這個抽象概念轉化成看得見的形狀。"}], "images": ["assets/sanxia-cover-wide.jpg", "https://mir-s3-cdn-cf.behance.net/project_modules/1400/086843240880135.694a5d5972b3d.jpg", "https://mir-s3-cdn-cf.behance.net/project_modules/1400/cef608240880135.694a65d898e21.jpg"]},
     {"id": "hakka-logotype", "title": "台灣客家茶文化館｜Logo 與標準字", "en": "Taiwan Hakka Tea Culture Museum — Logo & Logotype", "category": "logotype", "year": "2026", "sub": true, "parent": "hakka-tea", "cover": "https://mir-s3-cdn-cf.behance.net/projects/808/7502ba251048871.Y3JvcCw0MDkxLDMyMDAsODcwLDA.jpg", "coverHi": "https://mir-s3-cdn-cf.behance.net/project_modules/max_3840_webp/192c39251048871.6a2d4af57421e.jpg", "coverHiW": 3840, "ratio": "808/632", "summary": "以茶園地形結合茶葉與親子意象，象徵文化傳承與陪伴成長；搭配圓潤的中英文標準字，延伸出直式、橫式等多種組合規範。", "meta": [["類型", "標準字設計"]], "sections": [{"h": "Logo", "p": "茶園的起伏地形結合茶葉與親子意象，象徵文化傳承與陪伴成長，透過茶文化體驗築起親子間共同的珍貴記憶。"}, {"h": "組合規範", "p": "規劃直式與橫式、中英文搭配等多種組合，方便應用在不同尺寸與媒材上。"}], "images": ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/192c39251048871.6a2d4af57421e.jpg", "https://mir-s3-cdn-cf.behance.net/project_modules/1400/c2ade0251048871.6a2da12468c94.jpg", "https://mir-s3-cdn-cf.behance.net/project_modules/1400/f8063a251048871.6a2da124688ad.jpg"]}
   ]
@@ -594,11 +591,11 @@ const coverAttrs = (p, i, sizes) => {
   const pos = p.coverPos ? ` style="object-position:${p.coverPos}"` : "";
   return `src="${esc(p.cover)}"${set}${pos}`;
 };
-const modAttrs = url => {
+const modAttrs = (url, sz) => {
   const m = String(url).match(/project_modules\/[^/]+\/(.+)$/);
   if (!m) return `src="${esc(url)}"`;
   const b = "https://mir-s3-cdn-cf.behance.net/project_modules/";
-  return `src="${b}1400_webp/${m[1]}" srcset="${b}1400_webp/${m[1]} 1400w, ${b}max_3840_webp/${m[1]} 3840w" sizes="(min-width: 821px) calc(100vw - 360px), 100vw"`;
+  return `src="${b}1400_webp/${m[1]}" srcset="${b}1400_webp/${m[1]} 1400w, ${b}max_3840_webp/${m[1]} 3840w" sizes="${sz || "(min-width: 821px) calc(100vw - 360px), 100vw"}"`;
 };
 const MAINS = () => SITE.projects.filter(p => !p.sub);   // 首頁和 About 只放主要作品；sub 是從大專案拆出來的小作品
 const catOf = id => SITE.categories.find(c => c.id === id) || { label: id, zh: "" };
@@ -785,7 +782,7 @@ function work(p){
     ${imgs.length ? `<div class="gallery"><img ${modAttrs(imgs[0])} alt="${esc(p.title)}"></div>` : `<div class="gallery"><img src="${ph(p.title, p.ratio, i)}" alt="${esc(p.title)}"></div>`}
     ${(p.sections || []).length ? `<div class="blocks">${p.sections.map(s => `<div class="block"><h3>${esc(s.h)}</h3><p>${esc(s.p)}</p></div>`).join("")}</div>` : ""}
     ${p.prototype ? `<section class="proto"><h3>Interactive Prototype</h3><div class="proto-stage"><div class="proto-frame" id="protoFrame"><iframe src="${esc(p.prototype.replace("https://www.figma.com/", "https://embed.figma.com/") + "&embed-host=share&hide-ui=1&scaling=contain&content-scaling=fixed")}" title="${esc(p.title)} 互動原型" loading="lazy" allowfullscreen></iframe><button class="proto-cover" id="protoCover" type="button"><span>點一下開始操作</span></button></div></div><p>點一下手機畫面就能操作原型，離開原型範圍後即可繼續捲動頁面；也可以<a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">在 Figma 開啟完整原型 ↗</a>。</p></section>` : ""}
-    <div class="gallery">${imgs.slice(1).map((src, k) => `<img ${modAttrs(src)} alt="${esc(p.title)} 圖 ${k + 2}" loading="lazy">`).join("")}</div>
+    <div class="gallery">${imgs.slice(1).map((src, k) => Array.isArray(src) ? `<div class="g-row">${src.map(([u, r]) => `<div class="g-cell" style="flex:${r} 1 0"><img ${modAttrs(u, `(min-width: 821px) calc((100vw - 360px) / ${src.length}), ${Math.ceil(100 / src.length)}vw`)} style="aspect-ratio:${r}" alt="${esc(p.title)}" loading="lazy"></div>`).join("")}</div>` : `<img ${modAttrs(src)} alt="${esc(p.title)} 圖 ${k + 2}" loading="lazy">`).join("")}</div>
     <nav class="pager"><a href="#w-${prev.id}"><small>← Prev</small><strong>${esc(prev.title)}</strong></a><a href="#w-${next.id}"><small>Next →</small><strong>${esc(next.title)}</strong></a></nav>
   </article>`;
 }
