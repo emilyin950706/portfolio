@@ -241,7 +241,6 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
 <div class="shell">
   <aside class="side" id="side">
     <div class="id">
-      <img class="avatar" id="avatar" alt="">
       <div>
         <p class="name" id="name"></p>
         <div class="role" id="role"></div>
@@ -271,7 +270,6 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
 const SITE = {
   name: "李宜臻 / Yi-Zhen Lee",
   role: "Designer",
-  avatar: "assets/me-avatar.jpg",            // 頭像，例如 "images/me.jpg"
   portrait: "assets/me.jpg",          // About 頁的大照片
   disciplines: ["Brand Identity","Event Identity","Logotype","Poster","Book Design","Photography"],
   tagline: "臺灣科技大學設計系｜現任設計系學會副會長｜善於設計企劃、品牌設計、攝影相關",
@@ -617,7 +615,6 @@ const idx = id => SITE.projects.findIndex(p => p.id === id);
 function sidebar(route){
   $("#name").textContent = SITE.name;
   $("#role").textContent = SITE.role;
-  const av = $("#avatar"); av.src = SITE.avatar || ph("", "1/1", 0); av.alt = SITE.name;
   const link = (h, label, head) => `<li${head ? ' class="head"' : ""}><a href="#${h}" ${route === h ? 'aria-current="page"' : ""}>${esc(label)}</a></li>`;
   $("#nav").innerHTML = link("home", "Home", true)
     + `<li class="sep" aria-hidden="true"></li>`
