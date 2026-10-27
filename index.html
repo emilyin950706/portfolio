@@ -161,12 +161,9 @@ html.has-cursor .cursor.hide{opacity:0}
 
 /* ---------- About ---------- */
 /* About 版面：手機一欄；平板／小筆電：照片＋內容兩欄；大螢幕：照片｜自介與聯絡｜經歷 三欄，避免右邊大片留白 */
-.about{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:48px 56px;align-items:start}
-.exp-col{grid-column:2}
-@media (min-width:821px){.portrait{position:sticky;top:40px}}
+.about{display:grid;grid-template-columns:minmax(0,1fr);gap:48px 56px;align-items:start}
 /* 大螢幕：自介欄和經歷欄之間拉開距離，中間加一條細直線，形成兩個版面 */
-@media (min-width:1200px){.about{grid-template-columns:minmax(0,220px) minmax(0,1fr) minmax(0,1.4fr);column-gap:48px}.exp-col{grid-column:3;grid-row:1;align-self:stretch;margin-left:24px;padding-left:48px;border-left:1px solid var(--line)}}
-.portrait{width:100%;aspect-ratio:1;object-fit:cover;object-position:50% 16%;background:var(--soft)}
+@media (min-width:1200px){.about{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);column-gap:48px}.exp-col{grid-column:2;grid-row:1;align-self:stretch;margin-left:24px;padding-left:48px;border-left:1px solid var(--line)}}
 .about h2{font-size:var(--s-xs);font-family:var(--font-mono);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .about section{display:flex;flex-direction:column}
 .stack{display:flex;flex-direction:column;gap:40px}
@@ -270,7 +267,7 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
 const SITE = {
   name: "李宜臻 / Yi-Zhen Lee",
   role: "Designer",
-  portrait: "assets/me.jpg",          // About 頁的大照片
+  portrait: "",          // About 頁的大照片
   disciplines: ["Brand Identity","Event Identity","Logotype","Poster","Book Design","Photography"],
   tagline: "臺灣科技大學設計系｜現任設計系學會副會長｜善於設計企劃、品牌設計、攝影相關",
   bio: [
@@ -813,7 +810,6 @@ const expItem = it => typeof it === "string"
 function about(){
   return `<p class="crumb"><a href="#home">./</a>about</p>
   <div class="about">
-    <img class="portrait" src="${SITE.portrait || ph("你的照片", "1/1", 1)}" alt="${esc(SITE.name)}">
     <div class="stack">
       <section><h1 class="page-h">${esc(SITE.name)}</h1><div class="role">${esc(SITE.role)}</div><p class="tagline">${esc(SITE.tagline)}</p></section>
       <section class="bio"><h2>About Zhen</h2><p class="disc">${SITE.disciplines.map(esc).join(" / ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
