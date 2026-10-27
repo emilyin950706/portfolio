@@ -649,6 +649,7 @@ const Cursor = (() => {
   });
   document.addEventListener("mouseout", e => { if (!e.relatedTarget) el.classList.add("hide"); });
   document.addEventListener("pointerover", e => { if (e.target.tagName === "IFRAME") el.classList.add("hide"); });
+  addEventListener("blur", () => el.classList.add("hide"));   // 點進 Figma 原型後焦點移到 iframe，黑點不再收到移動事件，先藏起來
   addEventListener("pointerdown", e => { if (e.pointerType === "mouse") down = true; });
   addEventListener("pointerup", () => { down = false; });
   const loop = now => {
@@ -660,7 +661,7 @@ const Cursor = (() => {
     requestAnimationFrame(loop);
   };
   requestAnimationFrame(loop);
-  return { setView(v){ view = v; }, refresh(){ const t = document.elementFromPoint(tx, ty); link = !!(t && t.closest("a, button")); } };
+  return { setView(v){ view = v; }, hide(){ el.classList.add("hide"); }, refresh(){ const t = document.elementFromPoint(tx, ty); link = !!(t && t.closest("a, button")); } };
 })();
 
 /* 作品帶自動滾動：無限循環、滑鼠移上暫停、可拖曳／滑動（放開後會順著慣性滑一段） */
@@ -843,7 +844,7 @@ function render(){
   Cursor.refresh();
   const pf = $("#protoFrame");
   if (pf) {
-    $("#protoCover").onclick = () => pf.classList.add("active");
+    $("#protoCover").onclick = () => { pf.classList.add("active"); Cursor.hide(); };
     pf.addEventListener("mouseleave", () => pf.classList.remove("active"));
   }
   document.querySelectorAll("[data-copy]").forEach(btn => btn.onclick = () => {
