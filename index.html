@@ -143,6 +143,8 @@ html.has-cursor .cursor.hide{opacity:0}
 .gallery img{width:100%;background:var(--soft)}
 .g-row{display:flex;gap:4px;margin-top:4px}
 .gallery > .g-row:first-child{margin-top:0}
+.gallery:has(+ .gallery){margin-bottom:0}
+.gallery + .gallery{margin-top:4px}
 .g-row + img{margin-top:4px}
 .g-cell{min-width:0}
 .g-cell img{display:block;height:auto;object-fit:cover}
