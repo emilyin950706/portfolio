@@ -166,7 +166,7 @@ html.has-cursor .cursor.hide{opacity:0}
 @media (min-width:821px){.portrait{position:sticky;top:40px}}
 /* 大螢幕：自介欄和經歷欄之間拉開距離，中間加一條細直線，形成兩個版面 */
 @media (min-width:1200px){.about{grid-template-columns:minmax(0,220px) minmax(0,1fr) minmax(0,1.4fr);column-gap:48px}.exp-col{grid-column:3;grid-row:1;align-self:stretch;margin-left:24px;padding-left:48px;border-left:1px solid var(--line)}}
-.portrait{width:100%;aspect-ratio:1;object-fit:cover;background:var(--soft)}
+.portrait{width:100%;aspect-ratio:743/1108;object-fit:cover;background:var(--soft)}
 .about h2{font-size:var(--s-xs);font-family:var(--font-mono);font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .about section{display:flex;flex-direction:column}
 .stack{display:flex;flex-direction:column;gap:40px}
@@ -271,8 +271,8 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
 const SITE = {
   name: "李宜臻 / Yi-Zhen Lee",
   role: "Designer",
-  avatar: "",            // 頭像，例如 "images/me.jpg"
-  portrait: "",          // About 頁的大照片
+  avatar: "assets/me-avatar.jpg",            // 頭像，例如 "images/me.jpg"
+  portrait: "assets/me.jpg",          // About 頁的大照片
   disciplines: ["Brand Identity","Event Identity","Logotype","Poster","Book Design","Photography"],
   tagline: "臺灣科技大學設計系｜現任設計系學會副會長｜善於設計企劃、品牌設計、攝影相關",
   bio: [
