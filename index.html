@@ -627,7 +627,7 @@ function grid(list){
   return `<div class="grid">${list.map(p => {
     const i = idx(p.id);
     return `<a class="card" href="#w-${p.id}"><div class="img"><img ${coverAttrs(p, i, "(min-width: 821px) 33vw, 100vw")} alt="${esc(p.title)}" loading="lazy"></div>
-      <div class="cap"><div class="t"><span>./</span>${esc(p.title)}</div><div class="y">${esc(catOf(p.category).label)} · ${esc(p.year)}</div></div></a>`;
+      <div class="cap"><div class="t">${esc(p.title)}</div><div class="y">${esc(catOf(p.category).label)} · ${esc(p.year)}</div></div></a>`;
   }).join("")}</div>`;
 }
 
@@ -636,10 +636,10 @@ function home(){
     const i = idx(p.id);
     return `<a class="tk" href="#w-${p.id}" draggable="false" ${dup ? 'aria-hidden="true" tabindex="-1"' : ""}>
       <div class="img" style="aspect-ratio:${esc(p.ratio || "4/5")}"><img ${coverAttrs(p, i, "(max-width: 820px) 70vw, 800px")} alt="${dup ? "" : esc(p.title)}" draggable="false"></div>
-      <div class="cap"><div class="t"><span>./</span>${esc(p.title)}</div><div class="y">${esc(p.year)}</div></div></a>`;
+      <div class="cap"><div class="t">${esc(p.title)}</div><div class="y">${esc(p.year)}</div></div></a>`;
   };
   const list = MAINS();
-  return `<p class="crumb">./works</p><h1 class="page-h">Selected Works</h1><p class="page-sub">${SITE.disciplines.map(esc).join(" / ")}</p>
+  return `<p class="crumb">works</p><h1 class="page-h">Selected Works</h1><p class="page-sub">${SITE.disciplines.map(esc).join(" / ")}</p>
     <div class="ticker" id="ticker"><div class="track">${list.map(p => item(p, false)).join("")}${list.map(p => item(p, true)).join("")}</div></div>`;
 }
 
@@ -777,7 +777,7 @@ function startTicker(){
   stopTicker = () => { Cursor.setView(false); cancelAnimationFrame(raf); clearTimeout(resumeT); ro.disconnect(); removeEventListener("pointermove", onMove); removeEventListener("pointerup", onUp); removeEventListener("pointercancel", onUp); stopTicker = () => {}; };
 }
 function category(c){
-  return `<p class="crumb"><a href="#home">./</a>${esc(c.id)}</p><h1 class="page-h">${esc(c.label)}</h1><p class="page-sub">${esc(c.zh)}</p>${grid(SITE.projects.filter(p => p.category === c.id))}`;
+  return `<p class="crumb">${esc(c.id)}</p><h1 class="page-h">${esc(c.label)}</h1><p class="page-sub">${esc(c.zh)}</p>${grid(SITE.projects.filter(p => p.category === c.id))}`;
 }
 const gImg = (u, n, p, st) => `<img ${modAttrs(u, `(min-width: 821px) calc((100vw - 360px) / ${n}), ${Math.ceil(100 / n)}vw`)} style="${st}" alt="${esc(p.title)}" loading="lazy">`;
 // 一排等高照片；某一格若是陣列的陣列，就變成上下堆疊的一欄（例：左一大張、右三小張）
@@ -791,7 +791,7 @@ function work(p){
   const par = p.parent ? SITE.projects.find(x => x.id === p.parent) : null;
   const imgs = (p.images || []).filter(Boolean);
   return `<article class="work">
-    <p class="crumb"><a href="#home">./</a><a href="#${c.id}">${esc(c.id)}</a>/${esc(p.id)}</p>
+    <p class="crumb"><a href="#${c.id}">${esc(c.id)}</a>/${esc(p.id)}</p>
     <div class="work-head"><div><h1 class="page-h">${esc(p.title)}</h1><p class="en">${esc(p.en)} — ${esc(p.year)}</p><p class="summary">${esc(p.summary)}</p></div>
       <dl class="meta">${[["年份", p.year], ...(p.meta || [])].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}${par ? `<dt>完整專案</dt><dd><a class="ext" href="#w-${par.id}">${esc(par.title)} →</a></dd>` : ""}${p.prototype ? `<dt>Prototype</dt><dd><a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">開啟互動原型 ↗</a></dd>` : ""}${p.behance ? `<dt>Behance</dt><dd><a class="ext" href="${esc(p.behance)}" target="_blank" rel="noopener">查看完整專案 ↗</a></dd>` : ""}</dl></div>
     ${imgs.length ? `<div class="gallery">${Array.isArray(imgs[0]) ? gRow(imgs[0], p) : `<img ${modAttrs(imgs[0])} alt="${esc(p.title)}">`}</div>` : `<div class="gallery"><img src="${ph(p.title, p.ratio, i)}" alt="${esc(p.title)}"></div>`}
@@ -808,7 +808,7 @@ const expItem = it => typeof it === "string"
   ? `<li>${esc(it)}</li>`
   : `<li class="entry"><span class="t">${esc(it.t)}</span><span class="d">${it.d.map(x => `<span class="row">${detail(x)}</span>`).join("")}</span></li>`;
 function about(){
-  return `<p class="crumb"><a href="#home">./</a>about</p>
+  return `<p class="crumb">about</p>
   <div class="about">
     <div class="stack">
       <section><h1 class="page-h">${esc(SITE.name)}</h1><div class="role">${esc(SITE.role)}</div><p class="tagline">${esc(SITE.tagline)}</p></section>
