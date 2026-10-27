@@ -46,9 +46,6 @@ img{display:block;max-width:100%}
 .nav .head a{color:var(--fg);font-size:var(--s-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
 /* 滑鼠移到 HOME、ABOUT ZHEN 時字變淡，提示可以點 */
 .nav .head a:hover{color:#a9ada6}
-/* ABOUT ZHEN 平常是淺灰色，滑過或在 About 頁時才變深 */
-.nav .head.about a{color:var(--muted)}
-.nav .head.about a:hover,.nav .head.about a[aria-current="page"]{color:var(--fg)}
 /* ABOUT ZHEN 下面那條分隔線到 Linktree 的距離，跟線上方一樣 */
 .nav + .social{margin-top:-12px}
 .nav a[aria-current="page"]::before{content:"";position:absolute;left:-12px;top:50%;width:5px;height:5px;border-radius:50%;background:var(--accent);translate:0 -50%}
@@ -625,7 +622,7 @@ function sidebar(route){
   $("#nav").innerHTML = link("home", "Home", true)
     + `<li class="sep" aria-hidden="true"></li>`
     + SITE.categories.map(c => link(c.id, c.label)).join("")
-    + `<li class="sep" aria-hidden="true"></li>` + link("about", "About Zhen", true).replace('<li class="head">', '<li class="head about">')
+    + `<li class="sep" aria-hidden="true"></li>` + link("about", "About Zhen")
     + `<li class="sep" aria-hidden="true"></li>`;
   $("#social").innerHTML = SITE.socials.map(extLink).join("");
   $("#foot").textContent = $("#sideFoot").textContent = `© ${new Date().getFullYear()} ${SITE.name}`;
