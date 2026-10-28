@@ -151,6 +151,11 @@ html.has-cursor .cursor.hide{opacity:0}
 .g-cell{min-width:0}
 .g-cell img{display:block;height:auto;object-fit:cover}
 .g-stack{display:flex;flex-direction:column;gap:4px}
+/* 作品最後的署名與說明（原本是 Behance 上的圖片，改成網頁文字） */
+.credits{margin:40px 0 0;font-size:var(--s-sm);color:var(--muted);line-height:1.9}
+.credits p{margin:0}
+.credits span{display:inline-block;min-width:11em;color:var(--fg)}
+.credits .note{margin-top:16px}
 .g-stack img{flex:1 1 0;min-height:0;height:100%;width:100%}
 .pager{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding-top:16px;font-size:var(--s-sm)}
 .pager a{display:flex;flex-direction:column;min-width:0}
@@ -362,6 +367,8 @@ const SITE = {
       ]
     },
     {
+      "credits": [["設計 Designer", "李宜臻 Yi-Zhen Lee、吳佳俞 Jia-Yu Wu"], ["指導老師 Instructor", "李根在 Ken-Tsai Lee"]],
+      "note": ["此為學生概念設計，非實際提案", "This is a student's conceptual design, not a real-world proposal."],
       "id": "hakka-tea",
       "coverHi": "https://mir-s3-cdn-cf.behance.net/project_modules/max_3840_webp/192c39251048871.6a2d4af57421e.jpg",
       "coverHiW": 3840,
@@ -411,11 +418,12 @@ const SITE = {
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/646441251048871.6a2da64e81c51.jpg",
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/518d78251048871.6a2e61cee9b4a.jpg",
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/0925f8251048871.6a2da12467ffb.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/632535251048871.6a2da124684ca.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/ba7b49251048871.6a2e5db9d1f75.jpg"
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/632535251048871.6a2da124684ca.jpg"
       ]
     },
     {
+      "credits": [["設計 Designer", "李宜臻 Yi-Zhen Lee"], ["指導老師 Instructor", "劉怡寧 I-Ning Liu"]],
+      "note": ["此為學生概念設計，非實際提案", "This is a student's conceptual design, not a real-world proposal."],
       "id": "perchtime",
       "coverHi": "https://mir-s3-cdn-cf.behance.net/project_modules/max_3840_webp/e5e45c250668485.6a24793247edf.jpg",
       "coverHiW": 3840,
@@ -464,12 +472,13 @@ const SITE = {
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/0c2e56250668485.6a2479324895b.jpg",
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/30f31a250668485.6a24793247083.jpg",
         "https://mir-s3-cdn-cf.behance.net/project_modules/1400/176108250668485.6a24793246989.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/506643250668485.6a247932457b3.jpg",
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/45bd65250668485.6a24793246595.jpg"
+        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/506643250668485.6a247932457b3.jpg"
       ]
     },
     {"id": "perchtime-posters", "title": "棲時 Perchtime.｜系列海報設計", "en": "Perchtime — Poster Series", "category": "poster", "year": "2026", "parent": "perchtime", "cover": "assets/perchtime-posters-cover-v4.jpg", "ratio": "808/632", "summary": "棲時品牌行銷系列海報。以 SHIMMER、PAUSE、ECHO 三張海報，描繪日常中不同時刻的停頓：上下兩片達克瓦茲夾住中間的線條插畫，把城市裡的片刻變成一份讓人停下來的甜點。", "meta": [["性質", "自創品牌"], ["類型", "系列海報、品牌行銷"]], "sections": [{"h": "SHIMMER", "p": "白天的街口，以綠色呈現行人與車流交錯的城市日常，斑馬線化為夾心，成為匆忙中的一處停靠。"}, {"h": "PAUSE", "p": "午後的室內，以咖啡色描繪工作與休息的片刻，時鐘停在 12:00，提醒自己放慢腳步。"}, {"h": "ECHO", "p": "夜晚的河岸，以紫色帶出月光、長椅與散步的人，讓一天的情緒在安靜裡慢慢回響。"}], "images": ["assets/perchtime-posters.jpg", [["assets/perchtime-shimmer.jpg", 1.5], ["assets/perchtime-pause.jpg", 1.5], ["assets/perchtime-echo.jpg", 1.5]]]},
     {
+      "credits": [["設計 Designer", "李宜臻 Yi-Zhen Lee"], ["指導教授 Instructor", "李根在 Ken-Tsai Lee"]],
+      "note": ["此為學生概念設計，非實際提案", "This is a student's conceptual design, not a real-world proposal."],
       "id": "sanxia-indigo",
       "coverHi": "assets/sanxia-cover.jpg",
       "coverHiW": 1962,
@@ -514,8 +523,7 @@ const SITE = {
         [["https://mir-s3-cdn-cf.behance.net/project_modules/1400/1620a7240880135.69494fbd0162a.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/8e2921240880135.69494fbd020fd.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/d969e5240880135.69494fbd008be.jpg", 1]],
         [["https://mir-s3-cdn-cf.behance.net/project_modules/1400/0c6f18240880135.69494fbd00e67.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/e5e190240880135.69494fbd01b2e.jpg", 1.3403], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/40e8a0240880135.69494fbd028da.jpg", 1.4927]],
         [["https://mir-s3-cdn-cf.behance.net/project_modules/1400/2c0be3240880135.69494fbd03676.jpg", 1.6101], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/b25804240880135.69494fbd03e5d.jpg", 0.6667], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/5ecee3240880135.69494fbd030d5.jpg", 1.5015]],
-        [["https://mir-s3-cdn-cf.behance.net/project_modules/1400/dae278240880135.69494fbf364f7.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/2ef061240880135.69494fbf37150.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/1a9276240880135.69494fbf36ba2.jpg", 1.5015]],
-        "https://mir-s3-cdn-cf.behance.net/project_modules/1400/79870c240880135.694a5ed2232c1.jpg"
+        [["https://mir-s3-cdn-cf.behance.net/project_modules/1400/dae278240880135.69494fbf364f7.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/2ef061240880135.69494fbf37150.jpg", 1.5015], ["https://mir-s3-cdn-cf.behance.net/project_modules/1400/1a9276240880135.69494fbf36ba2.jpg", 1.5015]]
       ]
     },
     {
@@ -804,6 +812,7 @@ function work(p){
     ${(p.sections || []).length ? `<div class="blocks">${p.sections.map(s => `<div class="block"><h3>${esc(s.h)}</h3><p>${esc(s.p)}</p></div>`).join("")}</div>` : ""}
     ${p.prototype ? `<section class="proto"><h3>Interactive Prototype</h3><div class="proto-stage"><div class="proto-frame" id="protoFrame"><iframe src="${esc(p.prototype.replace("https://www.figma.com/", "https://embed.figma.com/") + "&embed-host=share&hide-ui=1&scaling=contain&content-scaling=fixed")}" title="${esc(p.title)} 互動原型" loading="lazy" allowfullscreen></iframe><button class="proto-cover" id="protoCover" type="button"><span>點一下開始操作</span></button></div></div><p>點一下手機畫面就能操作原型，離開原型範圍後即可繼續捲動頁面；也可以<a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">在 Figma 開啟完整原型 ↗</a>。</p></section>` : ""}
     <div class="gallery">${imgs.slice(1).map((src, k) => Array.isArray(src) ? gRow(src, p) : `<img ${modAttrs(src)} alt="${esc(p.title)} 圖 ${k + 2}" loading="lazy">`).join("")}</div>
+    ${p.credits ? `<div class="credits">${p.credits.map(([k, v]) => `<p><span>${esc(k)}</span>${esc(v)}</p>`).join("")}${(p.note || []).length ? `<div class="note">${p.note.map(n => `<p>${esc(n)}</p>`).join("")}</div>` : ""}</div>` : ""}
     <nav class="pager"><a href="#w-${prev.id}"><small>← Prev</small><strong>${esc(prev.title)}</strong></a><a href="#w-${next.id}"><small>Next →</small><strong>${esc(next.title)}</strong></a></nav>
   </article>`;
 }
