@@ -903,7 +903,7 @@ function render(){
   if (fb && window.St) {
     const pg = SITE.projects.find(x => "#w-" + x.id === location.hash).flipbook;
     const book = new St.PageFlip(fb, { width: 437, height: 620, size: "stretch", minWidth: 210, maxWidth: 520, minHeight: 200, maxHeight: 740, showCover: true, maxShadowOpacity: .45, mobileScrollSupport: true, flippingTime: 800 });
-    book.loadFromImages(pg.pages);
+    book.loadFromImages(fb.clientWidth < 420 ? pg.pages.filter(u => !/inside-/.test(u)) : pg.pages);
     fb.parentElement.querySelector(".prev").onclick = () => book.flipPrev();
     fb.parentElement.querySelector(".next").onclick = () => book.flipNext();
   }
