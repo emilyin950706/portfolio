@@ -68,6 +68,9 @@ img{display:block;max-width:100%}
 .ico{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .links .ico{width:16px;height:16px}
 .menu-btn{display:none}
+/* 點左上角名字回到首頁 */
+.home-link{display:block;width:fit-content;transition:opacity .2s}
+.home-link:hover{opacity:.6}
 
 /* ---------- 主內容 ---------- */
 main{min-width:0;animation:in .35s ease both}
@@ -276,10 +279,10 @@ footer{grid-column:1/-1;font-family:var(--font-mono);font-size:var(--s-xs);color
 <div class="shell">
   <aside class="side" id="side">
     <div class="id">
-      <div>
+      <a class="home-link" id="homeLink" href="#home" aria-label="回到首頁">
         <p class="name" id="name"></p>
         <div class="role" id="role"></div>
-      </div>
+      </a>
       <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="sideBody" aria-label="Open menu"><span></span><span></span><span></span></button>
     </div>
     <div class="side-body" id="sideBody">
@@ -982,6 +985,8 @@ function setMenu(o){
   const items = [...document.querySelectorAll("#nav > li, #social > a")];
   items.forEach((el, k) => { el.style.setProperty("--i", k); el.style.setProperty("--ri", items.length - 1 - k); });
 }
+// 已經在首頁時再點名字：捲回最上面、收起選單
+$("#homeLink").onclick = e => { if ((location.hash || "#home") === "#home") { e.preventDefault(); setMenu(false); scrollTo({ top: 0, behavior: "smooth" }); } };
 $("#menuBtn").onclick = () => setMenu(!$("#side").classList.contains("open"));
 addEventListener("keydown", e => { if (e.key === "Escape" && $("#side").classList.contains("open")) setMenu(false); });
 addEventListener("hashchange", render);
