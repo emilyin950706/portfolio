@@ -154,7 +154,7 @@ html.has-cursor .cursor.hide{opacity:0}
 /* 作品最後的署名與說明（原本是 Behance 上的圖片，改成網頁文字） */
 .credits{margin:56px 0 0;font-size:var(--s-sm);color:var(--muted);line-height:1.9}
 .credits p{margin:0}
-.credits span{display:inline-block;min-width:11em;color:var(--fg)}
+.credits span{display:inline-block;min-width:11em}
 .credits .note{margin-top:16px}
 .g-stack img{flex:1 1 0;min-height:0;height:100%;width:100%}
 .pager{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);margin-top:72px;padding-top:24px;font-size:var(--s-sm)}
@@ -903,7 +903,11 @@ addEventListener("hashchange", render);
 document.addEventListener("pointerdown", e => { const pf = $("#protoFrame"); if (pf && !pf.contains(e.target)) pf.classList.remove("active"); });
 document.addEventListener("error", e => {
   const t = e.target;
-  if (t.tagName === "IMG" && !t.dataset.fb) { t.dataset.fb = "1"; t.removeAttribute("srcset"); t.removeAttribute("sizes"); t.src = ph(t.alt || "", "808/632", 0); }
+  if (t.tagName !== "IMG") return;
+  // 第一次失敗：Behance 圖改抓一般的 1400px JPG（高解析螢幕會抓 3840px，超長的圖偶爾會載入失敗）
+  const m = !t.dataset.retry && String(t.currentSrc || t.src).match(/project_modules\/[^/]+\/([^?]+)/);
+  if (m) { t.dataset.retry = "1"; t.removeAttribute("srcset"); t.removeAttribute("sizes"); t.src = "https://mir-s3-cdn-cf.behance.net/project_modules/1400/" + m[1]; return; }
+  if (!t.dataset.fb) { t.dataset.fb = "1"; t.removeAttribute("srcset"); t.removeAttribute("sizes"); t.src = ph(t.alt || "", "808/632", 0); }
 }, true);
 render();
 </script>
