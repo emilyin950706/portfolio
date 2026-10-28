@@ -147,7 +147,7 @@ html.has-cursor .cursor.hide{opacity:0}
 .flip-book{width:min(880px,100%);margin:0 auto;transition:transform .5s ease}.flip-page{background:#fff}.flip-page.clear{background:none}.flip-under{position:absolute;display:none;z-index:0;background:#fff;pointer-events:none}.flip-under img{display:block;width:100%;height:100%}.flip-under::after{content:"";position:absolute;inset:0}.flip-under.--right::after{background:linear-gradient(to right,rgba(0,0,0,.22),rgba(0,0,0,0) 7%)}.flip-under.--left::after{background:linear-gradient(to left,rgba(0,0,0,.22),rgba(0,0,0,0) 7%)}.flip-page::after{content:"";position:absolute;inset:0;pointer-events:none}.flip-page.--left::after{background:linear-gradient(to left,rgba(0,0,0,.22),rgba(0,0,0,0) 7%)}.flip-page.--right::after{background:linear-gradient(to right,rgba(0,0,0,.22),rgba(0,0,0,0) 7%)}.flip-page img{display:block;width:100%;height:100%;object-fit:cover;-webkit-user-select:none;user-select:none;pointer-events:none}
 .flip-nav{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--fg);font-size:22px;line-height:1;cursor:pointer}
 .flip-nav:hover{background:var(--soft)}
-@media (max-width:820px){.flip-nav{display:none}.flip-stage{padding:20px 8px}}
+@media (max-width:820px){.flip-nav{display:none}.flip-stage{padding:16px 4px}}
 /* 在手機（觸控螢幕）上 Figma 不會畫出手機外框，這裡自己畫一支：黑色邊框＋圓角＋動態島；電腦上 Figma 自己會畫，所以不加 */
 @media (max-width:820px) and (hover:none) and (pointer:coarse){
   .proto-stage{padding:28px 0}
@@ -838,7 +838,7 @@ function work(p){
       <dl class="meta">${[["年份", p.year], ...(p.meta || [])].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}${par ? `<dt>完整專案</dt><dd><a class="ext" href="#w-${par.id}">${esc(par.title)} →</a></dd>` : ""}${p.prototype ? `<dt>Prototype</dt><dd><a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">開啟互動原型 ↗</a></dd>` : ""}${p.behance ? `<dt>Behance</dt><dd><a class="ext" href="${esc(p.behance)}" target="_blank" rel="noopener">查看完整專案 ↗</a></dd>` : ""}</dl></div>
     ${imgs.length ? `<div class="gallery">${Array.isArray(imgs[0]) ? gRow(imgs[0], p) : `<img ${modAttrs(imgs[0])} alt="${esc(p.title)}">`}</div>` : `<div class="gallery"><img src="${ph(p.title, p.ratio, i)}" alt="${esc(p.title)}"></div>`}
     ${(p.sections || []).length ? `<div class="blocks">${p.sections.map(s => `<div class="block"><h3>${esc(s.h)}</h3><p>${esc(s.p)}</p></div>`).join("")}</div>` : ""}
-    ${p.flipbook ? `<section class="proto flip"><h3>Flip Through</h3><div class="flip-stage"><button class="flip-nav prev" type="button" aria-label="上一頁">‹</button><div class="flip-book" id="flipBook"></div><button class="flip-nav next" type="button" aria-label="下一頁">›</button></div><p>點頁角或左右拖曳就能翻頁，手機上用滑的。</p></section>` : ""}
+    ${p.flipbook ? `<section class="proto flip"><h3>Flip Through</h3><div class="flip-stage"><button class="flip-nav prev" type="button" aria-label="上一頁">‹</button><div class="flip-book" id="flipBook"></div><button class="flip-nav next" type="button" aria-label="下一頁">›</button></div><p>點頁角或左右拖曳就能翻頁；手機上用滑的，橫放可以看大一點的跨頁。</p></section>` : ""}
     ${p.prototype ? `<section class="proto"><h3>Interactive Prototype</h3><div class="proto-stage"><div class="proto-frame" id="protoFrame"><iframe src="${esc(p.prototype.replace("https://www.figma.com/", "https://embed.figma.com/") + "&embed-host=share&hide-ui=1&scaling=contain&content-scaling=fixed")}" title="${esc(p.title)} 互動原型" loading="lazy" allowfullscreen></iframe><button class="proto-cover" id="protoCover" type="button"><span>點一下開始操作</span></button></div></div><p>點一下手機畫面就能操作原型，離開原型範圍後即可繼續捲動頁面；也可以<a class="ext" href="${esc(p.prototype)}" target="_blank" rel="noopener">在 Figma 開啟完整原型 ↗</a>。</p></section>` : ""}
     <div class="gallery">${imgs.slice(1).map((src, k) => (src && src.h) ? `<div class="g-text"><h3>${esc(src.h)}</h3><p>${esc(src.p)}</p></div>` : Array.isArray(src) ? gRow(src, p) : `<img ${modAttrs(src)} alt="${esc(p.title)} 圖 ${k + 2}" loading="lazy">`).join("")}</div>
     ${p.credits ? `<div class="credits">${p.credits.map(([k, v]) => `<p><span>${esc(k)}</span>${esc(v)}</p>`).join("")}${(p.note || []).length ? `<div class="note">${p.note.map(n => `<p>${esc(n)}</p>`).join("")}</div>` : ""}</div>` : ""}
@@ -902,8 +902,8 @@ function render(){
   const fb = $("#flipBook");
   if (fb && window.St) {
     const pg = SITE.projects.find(x => "#w-" + x.id === location.hash).flipbook;
-    const book = new St.PageFlip(fb, { width: 437, height: 620, size: "stretch", minWidth: 210, maxWidth: 520, minHeight: 200, maxHeight: 740, showCover: true, maxShadowOpacity: .45, mobileScrollSupport: true, flippingTime: 800 });
-    const urls = fb.clientWidth < 420 ? pg.pages.filter(u => !/inside-|-in\./.test(u)) : pg.pages;
+    const book = new St.PageFlip(fb, { width: 437, height: 620, size: "stretch", minWidth: 100, maxWidth: 520, minHeight: 140, usePortrait: false, maxHeight: 740, showCover: true, maxShadowOpacity: .45, mobileScrollSupport: true, flippingTime: 800 });
+    const urls = pg.pages;
     fb.innerHTML = urls.map(u => `<div class="flip-page${/\.png$/.test(u) ? " clear" : ""}"><img src="${u}" alt="" draggable="false"></div>`).join("");
     book.loadFromHTML(fb.querySelectorAll(".flip-page"));
     // 鏤空藍紙是獨立的一張：闔上時在它底下墊封面／封底，翻頁時就能從窗洞看到底下那頁
