@@ -144,7 +144,7 @@ html.has-cursor .cursor.hide{opacity:0}
 .proto .ext{color:var(--accent)}
 /* 布影小書翻頁 */
 .flip-stage{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;padding:32px 12px;border:1px solid var(--line);background:linear-gradient(#f7f7f5,#ecebe7)}
-.flip-book{width:min(880px,100%);margin:0 auto}
+.flip-book{width:min(880px,100%);margin:0 auto;transition:transform .5s ease}.flip-page{background:#fff}.flip-page::after{content:"";position:absolute;inset:0;pointer-events:none}.flip-page.--left::after{background:linear-gradient(to left,rgba(0,0,0,.22),rgba(0,0,0,0) 7%)}.flip-page.--right::after{background:linear-gradient(to right,rgba(0,0,0,.22),rgba(0,0,0,0) 7%)}.flip-page img{display:block;width:100%;height:100%;object-fit:cover;-webkit-user-select:none;user-select:none;pointer-events:none}
 .flip-nav{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#fff;color:var(--fg);font-size:22px;line-height:1;cursor:pointer}
 .flip-nav:hover{background:var(--soft)}
 @media (max-width:820px){.flip-nav{display:none}.flip-stage{padding:20px 8px}}
@@ -903,7 +903,16 @@ function render(){
   if (fb && window.St) {
     const pg = SITE.projects.find(x => "#w-" + x.id === location.hash).flipbook;
     const book = new St.PageFlip(fb, { width: 437, height: 620, size: "stretch", minWidth: 210, maxWidth: 520, minHeight: 200, maxHeight: 740, showCover: true, maxShadowOpacity: .45, mobileScrollSupport: true, flippingTime: 800 });
-    book.loadFromImages(fb.clientWidth < 420 ? pg.pages.filter(u => !/inside-|-in\./.test(u)) : pg.pages);
+    const urls = fb.clientWidth < 420 ? pg.pages.filter(u => !/inside-|-in\./.test(u)) : pg.pages;
+    fb.innerHTML = urls.map(u => `<div class="flip-page"><img src="${u}" alt="" draggable="false"></div>`).join("");
+    book.loadFromHTML(fb.querySelectorAll(".flip-page"));
+    // 闔上時（只有封面或封底）把書移到正中間，不留左右的空白
+    const center = () => {
+      const i = book.getCurrentPageIndex(), n = book.getPageCount();
+      const land = book.getOrientation() === "landscape";
+      fb.style.transform = land && i === 0 ? "translateX(-25%)" : land && i >= n - 1 ? "translateX(25%)" : "";
+    };
+    book.on("flip", center); book.on("changeOrientation", center); center();
     fb.parentElement.querySelector(".prev").onclick = () => book.flipPrev();
     fb.parentElement.querySelector(".next").onclick = () => book.flipNext();
   }
