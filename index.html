@@ -606,6 +606,8 @@ const modAttrs = (url, sz) => {
   const b = "https://mir-s3-cdn-cf.behance.net/project_modules/";
   return `src="${b}1400_webp/${m[1]}" srcset="${b}1400_webp/${m[1]} 1400w, ${b}max_3840_webp/${m[1]} 3840w" sizes="${sz || "(min-width: 821px) calc(100vw - 360px), 100vw"}"`;
 };
+// 首頁和 About 的分類列表：直接用選單裡的分類（不含 Explorations），改分類時會自動同步
+const DISCIPLINES = () => SITE.categories.filter(c => c.id !== "explorations").map(c => c.label);
 const MAINS = () => SITE.projects.filter(p => !p.sub);   // 首頁和 About 只放主要作品；sub 是從大專案拆出來的小作品
 const catOf = id => SITE.categories.find(c => c.id === id) || { label: id, zh: "" };
 const idx = id => SITE.projects.findIndex(p => p.id === id);
@@ -640,7 +642,7 @@ function home(){
       <div class="cap"><div class="t">${esc(p.title)}</div><div class="y">${esc(p.year)}</div></div></a>`;
   };
   const list = MAINS();
-  return `<p class="crumb">works</p><h1 class="page-h">Selected Works</h1><p class="page-sub">${SITE.disciplines.map(esc).join(" / ")}</p>
+  return `<p class="crumb">works</p><h1 class="page-h">Selected Works</h1><p class="page-sub">${DISCIPLINES().map(esc).join(" / ")}</p>
     <div class="ticker" id="ticker"><div class="track">${list.map(p => item(p, false)).join("")}${list.map(p => item(p, true)).join("")}</div></div>`;
 }
 
@@ -813,7 +815,7 @@ function about(){
   <div class="about">
     <div class="stack">
       <section><h1 class="page-h">${esc(SITE.name)}</h1><div class="role">${esc(SITE.role)}</div><p class="tagline">${esc(SITE.tagline)}</p></section>
-      <section class="bio"><h2>About Zhen</h2><p class="disc">${SITE.disciplines.map(esc).join(" / ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
+      <section class="bio"><h2>About Zhen</h2><p class="disc">${DISCIPLINES().map(esc).join(" / ")}</p>${SITE.bio.map(b => `<p>${esc(b)}</p>`).join("")}</section>
       <section><h2>Email</h2><div class="mail"><code id="mail">${esc(SITE.email)}</code><button class="copy" type="button" data-copy="mail">複製</button></div></section>
       <section><h2>Phone</h2><div class="mail"><a href="tel:${esc(SITE.phone.replace(/[^+\d]/g, ""))}"><code id="phone">${esc(SITE.phone)}</code></a><button class="copy" type="button" data-copy="phone">複製</button></div></section>
       <section><h2>Follow</h2><div class="links">${SITE.socials.map(s => extLink({ label: s.url.replace(/^https?:\/\/(www\.)?/, ""), url: s.url })).join("")}</div><p class="note">${esc(SITE.contactNote)}</p></section>
