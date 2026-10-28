@@ -817,9 +817,10 @@ const gRow = (src, p) => `<div class="g-row">${src.map(c => {
   if (Array.isArray(c[0])) { const r = 1 / c.reduce((t, [, x]) => t + 1 / x, 0); return `<div class="g-cell g-stack" style="flex:${r} 1 0;aspect-ratio:${r}">${c.map(([u]) => gImg(u, src.length + 1, p, "")).join("")}</div>`; }
   const [u, r] = c; return `<div class="g-cell" style="flex:${r} 1 0">${gImg(u, src.length, p, `aspect-ratio:${r}`)}</div>`;
 }).join("")}</div>`;
+// 上一個／下一個：依左側選單的分類順序、分類頁裡的排列順序走，不會在分類之間亂跳
 function work(p){
   const i = idx(p.id), c = catOf(p.category);
-  const seq = p.sub ? SITE.projects.filter(x => x.category === p.category) : MAINS(), j = seq.indexOf(p), n = seq.length, prev = seq[(j - 1 + n) % n], next = seq[(j + 1) % n];
+  const seq = SITE.categories.flatMap(c => SITE.projects.filter(x => x.category === c.id)), j = seq.indexOf(p), n = seq.length, prev = seq[(j - 1 + n) % n], next = seq[(j + 1) % n];
   const par = p.parent ? SITE.projects.find(x => x.id === p.parent) : null;
   const imgs = (p.images || []).filter(Boolean);
   return `<article class="work">
